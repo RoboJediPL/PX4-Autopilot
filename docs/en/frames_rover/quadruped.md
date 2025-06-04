@@ -5,3 +5,15 @@ PX4 provides an experimental module for controlling quadruped robots that can wa
 The `quadruped_control` module converts leg commands to wheel setpoints in *wheel mode* and republishes joint states when in *leg mode*. Use the `QD_MODE` parameter to switch between modes.
 
 This feature is experimental and may require additional integration for specific hardware like the Unitree B2-W. Contributions are welcome.
+
+## Building for Pixhawk 4 Rover
+
+To build the quadruped firmware for Pixhawk 4, run:
+
+```sh
+make px4_fmu-v5_rover
+```
+
+Flash the generated firmware onto your controller using [custom firmware installation instructions](../config/firmware.md#installing-px4-main-beta-or-custom-firmware).
+
+After boot, set `QD_MODE` to `0` for wheel mode or `1` for leg mode.
