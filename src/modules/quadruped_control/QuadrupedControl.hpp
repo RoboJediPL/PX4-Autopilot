@@ -80,7 +80,8 @@ private:
 	uORB::Publication<rover_steering_setpoint_s> _rover_steering_pub{ORB_ID(rover_steering_setpoint)};
 
 	DEFINE_PARAMETERS(
-		(ParamInt<px4::params::QD_MODE>) _param_qd_mode
+		(ParamInt<px4::params::QD_MODE>)      _param_qd_mode,
+		(ParamFloat<px4::params::QD_THR_GAIN>) _param_qd_thr_gain,
+		(ParamFloat<px4::params::QD_STR_GAIN>) _param_qd_str_gain
 	)
-
 };

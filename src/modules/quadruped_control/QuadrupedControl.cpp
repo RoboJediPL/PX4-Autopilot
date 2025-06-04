@@ -75,15 +75,17 @@ void QuadrupedControl::Run()
 			const float right = cmd.joint_velocity[0];
 			const float left  = cmd.joint_velocity[1];
 
+			const float avg = (right + left) * 0.5f;
+
 			rover_throttle_setpoint_s thr{};
 			thr.timestamp = hrt_absolute_time();
-			thr.throttle_body_x = (right + left) * 0.5f;
+			thr.throttle_body_x = avg * _param_qd_thr_gain.get();
 			thr.throttle_body_y = 0.f;
 			_rover_throttle_pub.publish(thr);
 
 			rover_steering_setpoint_s steer{};
 			steer.timestamp = thr.timestamp;
-			steer.normalized_speed_diff = right - left;
+			steer.normalized_speed_diff = (right - left) * _param_qd_str_gain.get();
 			_rover_steering_pub.publish(steer);
 		}
 
@@ -110,8 +112,6 @@ void QuadrupedControl::Run()
 			_leg_status_pub.publish(status);
 		}
 	}
-
-  
 }
 
 int QuadrupedControl::task_spawn(int argc, char *argv[])
@@ -126,7 +126,6 @@ int QuadrupedControl::task_spawn(int argc, char *argv[])
 
 	delete instance;
 	return -1;
-
 }
 
 int QuadrupedControl::custom_command(int argc, char *argv[])
@@ -142,7 +141,6 @@ int QuadrupedControl::print_usage(const char *reason)
 
 	PRINT_MODULE_DESCRIPTION(
 		R"DESCR(
-
 ### Description
 Simple quadruped control module example. It republishes leg commands as status.
 )DESCR");

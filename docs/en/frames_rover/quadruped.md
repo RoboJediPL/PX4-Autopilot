@@ -13,9 +13,10 @@ This feature is experimental and may require additional integration for specific
 To build the quadruped firmware for Pixhawk 4, run:
 
 ```sh
-make px4_fmu-v5_rover
+make px4_fmu-v5_quadruped
 ```
 
 Flash the generated firmware onto your controller using [custom firmware installation instructions](../config/firmware.md#installing-px4-main-beta-or-custom-firmware).
 
 After boot, set `QD_MODE` to `0` for wheel mode or `1` for leg mode.
+The wheel-to-rover conversion gains can be tuned with `QD_THR_GAIN` and `QD_STR_GAIN`.
