@@ -1,0 +1,13 @@
+module_name: Quadruped Control
+
+parameters:
+  - group: Quadruped
+    definitions:
+      QD_MODE:
+        description:
+          short: Quadruped mode
+          long: 0: wheel mode, 1: leg mode
+        type: int32
+        min: 0
+        max: 1
+        default: 0
