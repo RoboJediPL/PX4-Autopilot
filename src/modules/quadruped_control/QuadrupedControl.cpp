@@ -64,15 +64,48 @@ void QuadrupedControl::Run()
                 updateParams();
         }
 
-        quadruped_leg_command_s cmd{};
+       quadruped_leg_command_s cmd{};
 
-        if (_leg_command_sub.update(&cmd)) {
-                quadruped_leg_status_s status{};
-                status.timestamp = hrt_absolute_time();
-                memcpy(status.joint_position, cmd.joint_position, sizeof(status.joint_position));
-                memcpy(status.joint_velocity, cmd.joint_velocity, sizeof(status.joint_velocity));
-                _leg_status_pub.publish(status);
-        }
+       if (_param_qd_mode.get() == 0) { // wheel mode
+               if (_leg_command_sub.update(&cmd)) {
+                       const float right = cmd.joint_velocity[0];
+                       const float left  = cmd.joint_velocity[1];
+
+                       rover_throttle_setpoint_s thr{};
+                       thr.timestamp = hrt_absolute_time();
+                       thr.throttle_body_x = (right + left) * 0.5f;
+                       thr.throttle_body_y = 0.f;
+                       _rover_throttle_pub.publish(thr);
+
+                       rover_steering_setpoint_s steer{};
+                       steer.timestamp = thr.timestamp;
+                       steer.normalized_speed_diff = right - left;
+                       _rover_steering_pub.publish(steer);
+               }
+
+               wheel_encoders_s wheel{};
+
+               if (_wheel_encoder_sub.update(&wheel)) {
+                       quadruped_leg_status_s status{};
+                       status.timestamp = wheel.timestamp;
+                       memset(status.joint_position, 0, sizeof(status.joint_position));
+                       memset(status.joint_velocity, 0, sizeof(status.joint_velocity));
+                       status.joint_position[0] = wheel.wheel_angle[0];
+                       status.joint_position[1] = wheel.wheel_angle[1];
+                       status.joint_velocity[0] = wheel.wheel_speed[0];
+                       status.joint_velocity[1] = wheel.wheel_speed[1];
+                       _leg_status_pub.publish(status);
+               }
+
+       } else {
+               if (_leg_command_sub.update(&cmd)) {
+                       quadruped_leg_status_s status{};
+                       status.timestamp = hrt_absolute_time();
+                       memcpy(status.joint_position, cmd.joint_position, sizeof(status.joint_position));
+                       memcpy(status.joint_velocity, cmd.joint_velocity, sizeof(status.joint_velocity));
+                       _leg_status_pub.publish(status);
+               }
+       }
 }
 
 int QuadrupedControl::task_spawn(int argc, char *argv[])
