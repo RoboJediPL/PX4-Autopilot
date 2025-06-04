@@ -38,6 +38,14 @@ make px4_fmu-v5_quadruped
 
 Flash the resulting firmware to your Pixhawk 4 to enable the `quadruped_control` module.
 
+The module exposes runtime parameters:
+* `QD_MODE` - selects wheel (`0`) or leg (`1`) operation.
+* `QD_THR_GAIN` - wheel throttle gain in wheel mode.
+* `QD_STR_GAIN` - wheel steering gain in wheel mode.
+
+Run `Tools/setup/ubuntu.sh` once to install the build and formatting dependencies required to
+compile the quadruped firmware and run `make check_format`.
+
 
 ## Changing Code and Contributing
 

@@ -23,7 +23,7 @@ This document outlines the proposed updates for running a Unitree B2-W quadruped
 - Add a dedicated page under `docs/en` and link it from the rover index.
 
 ## 6. Testing
-- Provide Gazebo simulation support for the quadruped, including wheel encoder simulation.
+- Provide Gazebo simulation support for the quadruped. A new `WheelEncoderSystem` plugin under `src/modules/simulation/gz_plugins/wheel_encoder` publishes wheel encoder data so PX4 can receive feedback like on real hardware.
 - Run `make px4_sitl_default` and other standard tests to verify the build.
 
 
@@ -32,4 +32,9 @@ To run format and build tests locally, install dependencies using `Tools/setup/u
 
 ## Current Status
 The quadruped control module and board configuration have been added. Format checks pass and the firmware builds successfully using `make px4_sitl_default` after running the setup script.
+
+## License and Disclaimer
+This repository is distributed under the BSD 3-Clause license. The software is provided
+"AS IS" without warranty of any kind. Quadruped and rover features rely on the
+experimental rover stack, so use this functionality at your own risk.
 

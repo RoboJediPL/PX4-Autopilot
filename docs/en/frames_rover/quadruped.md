@@ -1,4 +1,11 @@
 # Quadruped with Wheels
+<LinkedBadge type="warning" text="Experimental" url="index.md#experimental-vehicles"/>
+
+:::warning
+Quadruped support uses the PX4 rover stack, which is [experimental](../airframes/index.md#experimental-vehicles).
+Use this firmware at your own risk and consider contributing improvements.
+:::
+
 
 PX4 provides an experimental module for controlling quadruped robots that can walk or drive using wheels.
 
@@ -8,15 +15,22 @@ In *wheel mode* the commanded joint velocities are translated into `rover_thrott
 
 This feature is experimental and may require additional integration for specific hardware like the Unitree B2-W. Contributions are welcome.
 
-## Building for Pixhawk 4 Rover
+## Building and Flashing for Pixhawk 4
 
-To build the quadruped firmware for Pixhawk 4, run:
+Build the quadruped firmware using the dedicated board target:
 
 ```sh
 make px4_fmu-v5_quadruped
 ```
 
-Flash the generated firmware onto your controller using [custom firmware installation instructions](../config/firmware.md#installing-px4-main-beta-or-custom-firmware).
+Flash the resulting firmware using the [custom firmware installation instructions](../config/firmware.md#installing-px4-main-beta-or-custom-firmware).
 
-After boot, set `QD_MODE` to `0` for wheel mode or `1` for leg mode.
-The wheel-to-rover conversion gains can be tuned with `QD_THR_GAIN` and `QD_STR_GAIN`.
+After boot, the `quadruped_control` module starts automatically.
+
+### Parameters
+
+* `QD_MODE` - 0: wheel mode, 1: leg mode.
+* `QD_THR_GAIN` - wheel throttle gain in wheel mode.
+* `QD_STR_GAIN` - wheel steering gain in wheel mode.
+
+In leg mode the module publishes joint states so you can implement your own gait generator.
