@@ -32,7 +32,9 @@
  ****************************************************************************/
 
 #include "QuadrupedControl.hpp"
-// Experimental quadruped module with wheel and leg support
+// Experimental quadruped module supporting both wheel drive and leg control.
+// Wheel mode converts leg velocity commands into rover throttle and steering
+// setpoints, while leg mode simply republishes the commanded joint states.
 
 
 QuadrupedControl::QuadrupedControl() :

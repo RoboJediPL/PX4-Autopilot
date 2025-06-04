@@ -33,7 +33,9 @@
 
 #pragma once
 
-// Header for experimental quadruped control module
+// Header for experimental quadruped control module supporting both wheels and legs.
+// Wheel mode converts leg velocity commands to rover-style throttle and steering
+// setpoints, while leg mode forwards commanded joint states directly.
 
 #include <px4_platform_common/module.h>
 #include <px4_platform_common/module_params.h>
