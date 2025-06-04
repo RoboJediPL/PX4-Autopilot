@@ -52,32 +52,32 @@
 using namespace time_literals;
 
 class QuadrupedControl : public ModuleBase<QuadrupedControl>, public ModuleParams,
-        public px4::ScheduledWorkItem
+	public px4::ScheduledWorkItem
 {
 public:
-        QuadrupedControl();
-        ~QuadrupedControl() override = default;
+	QuadrupedControl();
+	~QuadrupedControl() override = default;
 
-        static int task_spawn(int argc, char *argv[]);
-        static int custom_command(int argc, char *argv[]);
-        static int print_usage(const char *reason = nullptr);
+	static int task_spawn(int argc, char *argv[]);
+	static int custom_command(int argc, char *argv[]);
+	static int print_usage(const char *reason = nullptr);
 
-        bool init();
+	bool init();
 
 private:
-        void Run() override;
-        void updateParams() override;
+	void Run() override;
+	void updateParams() override;
 
-        uORB::Subscription _parameter_update_sub{ORB_ID(parameter_update)};
-        uORB::Subscription _vehicle_control_mode_sub{ORB_ID(vehicle_control_mode)};
-        uORB::Subscription _leg_command_sub{ORB_ID(quadruped_leg_command)};
-       uORB::Subscription _wheel_encoder_sub{ORB_ID(wheel_encoders)};
+	uORB::Subscription _parameter_update_sub{ORB_ID(parameter_update)};
+	uORB::Subscription _vehicle_control_mode_sub{ORB_ID(vehicle_control_mode)};
+	uORB::Subscription _leg_command_sub{ORB_ID(quadruped_leg_command)};
+	uORB::Subscription _wheel_encoder_sub{ORB_ID(wheel_encoders)};
 
-        uORB::Publication<quadruped_leg_status_s> _leg_status_pub{ORB_ID(quadruped_leg_status)};
-       uORB::Publication<rover_throttle_setpoint_s> _rover_throttle_pub{ORB_ID(rover_throttle_setpoint)};
-       uORB::Publication<rover_steering_setpoint_s> _rover_steering_pub{ORB_ID(rover_steering_setpoint)};
+	uORB::Publication<quadruped_leg_status_s> _leg_status_pub{ORB_ID(quadruped_leg_status)};
+	uORB::Publication<rover_throttle_setpoint_s> _rover_throttle_pub{ORB_ID(rover_throttle_setpoint)};
+	uORB::Publication<rover_steering_setpoint_s> _rover_steering_pub{ORB_ID(rover_steering_setpoint)};
 
-        DEFINE_PARAMETERS(
-                (ParamInt<px4::params::QD_MODE>) _param_qd_mode
-        )
+	DEFINE_PARAMETERS(
+		(ParamInt<px4::params::QD_MODE>) _param_qd_mode
+	)
 };
