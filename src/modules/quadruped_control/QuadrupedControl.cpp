@@ -32,6 +32,8 @@
  ****************************************************************************/
 
 #include "QuadrupedControl.hpp"
+// Experimental quadruped module with wheel and leg support
+
 
 QuadrupedControl::QuadrupedControl() :
         ModuleParams(nullptr),
