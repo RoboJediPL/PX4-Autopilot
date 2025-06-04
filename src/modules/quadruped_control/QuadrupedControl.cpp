@@ -110,6 +110,8 @@ void QuadrupedControl::Run()
 			_leg_status_pub.publish(status);
 		}
 	}
+
+  
 }
 
 int QuadrupedControl::task_spawn(int argc, char *argv[])
@@ -124,6 +126,7 @@ int QuadrupedControl::task_spawn(int argc, char *argv[])
 
 	delete instance;
 	return -1;
+
 }
 
 int QuadrupedControl::custom_command(int argc, char *argv[])
@@ -139,6 +142,7 @@ int QuadrupedControl::print_usage(const char *reason)
 
 	PRINT_MODULE_DESCRIPTION(
 		R"DESCR(
+
 ### Description
 Simple quadruped control module example. It republishes leg commands as status.
 )DESCR");

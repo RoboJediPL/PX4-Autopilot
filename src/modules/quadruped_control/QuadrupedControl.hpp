@@ -82,4 +82,5 @@ private:
 	DEFINE_PARAMETERS(
 		(ParamInt<px4::params::QD_MODE>) _param_qd_mode
 	)
+
 };
