@@ -43,6 +43,9 @@ The module exposes runtime parameters:
 * `QD_THR_GAIN` - wheel throttle gain in wheel mode.
 * `QD_STR_GAIN` - wheel steering gain in wheel mode.
 
+Run `Tools/setup/ubuntu.sh` once to install the build and formatting dependencies required to
+compile the quadruped firmware and run `make check_format`.
+
 
 ## Changing Code and Contributing
 
