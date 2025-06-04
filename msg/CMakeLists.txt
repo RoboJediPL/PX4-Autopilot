@@ -232,10 +232,12 @@ set(msg_files
 	VehicleRoi.msg
 	VehicleThrustSetpoint.msg
 	VehicleTorqueSetpoint.msg
-	VelocityLimits.msg
-	WheelEncoders.msg
-	Wind.msg
-	YawEstimatorStatus.msg
+        VelocityLimits.msg
+        WheelEncoders.msg
+        QuadrupedLegCommand.msg
+        QuadrupedLegStatus.msg
+        Wind.msg
+        YawEstimatorStatus.msg
 	versioned/ActuatorMotors.msg
 	versioned/ActuatorServos.msg
 	versioned/AirspeedValidated.msg
