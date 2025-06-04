@@ -33,6 +33,10 @@
 
 #pragma once
 
+// Header for experimental quadruped control module supporting both wheels and legs.
+// Wheel mode converts leg velocity commands to rover-style throttle and steering
+// setpoints, while leg mode forwards commanded joint states directly.
+
 #include <px4_platform_common/module.h>
 #include <px4_platform_common/module_params.h>
 #include <px4_platform_common/px4_work_queue/ScheduledWorkItem.hpp>
@@ -43,33 +47,40 @@
 #include <uORB/topics/vehicle_control_mode.h>
 #include <uORB/topics/quadruped_leg_command.h>
 #include <uORB/topics/quadruped_leg_status.h>
+#include <uORB/topics/wheel_encoders.h>
+#include <uORB/topics/rover_throttle_setpoint.h>
+#include <uORB/topics/rover_steering_setpoint.h>
 
 using namespace time_literals;
 
 class QuadrupedControl : public ModuleBase<QuadrupedControl>, public ModuleParams,
-        public px4::ScheduledWorkItem
+	public px4::ScheduledWorkItem
 {
 public:
-        QuadrupedControl();
-        ~QuadrupedControl() override = default;
+	QuadrupedControl();
+	~QuadrupedControl() override = default;
 
-        static int task_spawn(int argc, char *argv[]);
-        static int custom_command(int argc, char *argv[]);
-        static int print_usage(const char *reason = nullptr);
+	static int task_spawn(int argc, char *argv[]);
+	static int custom_command(int argc, char *argv[]);
+	static int print_usage(const char *reason = nullptr);
 
-        bool init();
+	bool init();
 
 private:
-        void Run() override;
-        void updateParams() override;
+	void Run() override;
+	void updateParams() override;
 
-        uORB::Subscription _parameter_update_sub{ORB_ID(parameter_update)};
-        uORB::Subscription _vehicle_control_mode_sub{ORB_ID(vehicle_control_mode)};
-        uORB::Subscription _leg_command_sub{ORB_ID(quadruped_leg_command)};
+	uORB::Subscription _parameter_update_sub{ORB_ID(parameter_update)};
+	uORB::Subscription _vehicle_control_mode_sub{ORB_ID(vehicle_control_mode)};
+	uORB::Subscription _leg_command_sub{ORB_ID(quadruped_leg_command)};
+	uORB::Subscription _wheel_encoder_sub{ORB_ID(wheel_encoders)};
 
-        uORB::Publication<quadruped_leg_status_s> _leg_status_pub{ORB_ID(quadruped_leg_status)};
+	uORB::Publication<quadruped_leg_status_s> _leg_status_pub{ORB_ID(quadruped_leg_status)};
+	uORB::Publication<rover_throttle_setpoint_s> _rover_throttle_pub{ORB_ID(rover_throttle_setpoint)};
+	uORB::Publication<rover_steering_setpoint_s> _rover_steering_pub{ORB_ID(rover_steering_setpoint)};
 
-        DEFINE_PARAMETERS(
-                (ParamInt<px4::params::QD_MODE>) _param_qd_mode
-        )
+	DEFINE_PARAMETERS(
+		(ParamInt<px4::params::QD_MODE>) _param_qd_mode
+	)
+
 };
