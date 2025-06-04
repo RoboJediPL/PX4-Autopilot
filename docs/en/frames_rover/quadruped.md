@@ -13,7 +13,7 @@ This feature is experimental and may require additional integration for specific
 To build the quadruped firmware for Pixhawk 4, run:
 
 ```sh
-make px4_fmu-v5_rover
+make px4_fmu-v5_quadruped
 ```
 
 Flash the generated firmware onto your controller using [custom firmware installation instructions](../config/firmware.md#installing-px4-main-beta-or-custom-firmware).
