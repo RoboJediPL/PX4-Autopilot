@@ -4,6 +4,8 @@ PX4 provides an experimental module for controlling quadruped robots that can wa
 
 The `quadruped_control` module converts leg commands to wheel setpoints in *wheel mode* and republishes joint states when in *leg mode*. Use the `QD_MODE` parameter to switch between modes.
 
+In *wheel mode* the commanded joint velocities are translated into `rover_throttle_setpoint` and `rover_steering_setpoint` messages. These setpoints can then be processed by the existing rover controllers to drive the wheel motors.
+
 This feature is experimental and may require additional integration for specific hardware like the Unitree B2-W. Contributions are welcome.
 
 ## Building for Pixhawk 4 Rover
