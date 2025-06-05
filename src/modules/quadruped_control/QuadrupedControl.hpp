@@ -33,6 +33,15 @@
 
 #pragma once
 
+// Header for experimental quadruped control module supporting both wheels and legs.
+// Each leg has four motors: Turn (TM), Rotate (RM), Lever (LM) and Wheel (WM).
+// The joint arrays are ordered as:
+// [FL_TM, FL_RM, FL_LM, FL_WM, FR_TM, FR_RM, FR_LM, FR_WM,
+//  RL_TM, RL_RM, RL_LM, RL_WM, RR_TM, RR_RM, RR_LM, RR_WM].
+// Wheel mode converts WM velocities into rover throttle/steering setpoints
+// while leg mode forwards commanded joint states directly.
+
+
 
 #include <px4_platform_common/module.h>
 #include <px4_platform_common/module_params.h>
@@ -51,33 +60,42 @@
 using namespace time_literals;
 
 class QuadrupedControl : public ModuleBase<QuadrupedControl>, public ModuleParams,
-        public px4::ScheduledWorkItem
+
+	public px4::ScheduledWorkItem
 {
 public:
-        QuadrupedControl();
-        ~QuadrupedControl() override = default;
+	QuadrupedControl();
+	~QuadrupedControl() override = default;
 
-        static int task_spawn(int argc, char *argv[]);
-        static int custom_command(int argc, char *argv[]);
-        static int print_usage(const char *reason = nullptr);
+	static int task_spawn(int argc, char *argv[]);
+	static int custom_command(int argc, char *argv[]);
+	static int print_usage(const char *reason = nullptr);
 
-        bool init();
+	bool init();
 
 private:
-        void Run() override;
-        void updateParams() override;
+	void Run() override;
+	void updateParams() override;
 
-        uORB::Subscription _parameter_update_sub{ORB_ID(parameter_update)};
-        uORB::Subscription _vehicle_control_mode_sub{ORB_ID(vehicle_control_mode)};
-        uORB::Subscription _leg_command_sub{ORB_ID(quadruped_leg_command)};
-       uORB::Subscription _wheel_encoder_sub{ORB_ID(wheel_encoders)};
+	uORB::Subscription _parameter_update_sub{ORB_ID(parameter_update)};
+	uORB::Subscription _vehicle_control_mode_sub{ORB_ID(vehicle_control_mode)};
+	uORB::Subscription _leg_command_sub{ORB_ID(quadruped_leg_command)};
+	uORB::Subscription _wheel_encoder_sub{ORB_ID(wheel_encoders)};
 
-        uORB::Publication<quadruped_leg_status_s> _leg_status_pub{ORB_ID(quadruped_leg_status)};
-       uORB::Publication<rover_throttle_setpoint_s> _rover_throttle_pub{ORB_ID(rover_throttle_setpoint)};
-       uORB::Publication<rover_steering_setpoint_s> _rover_steering_pub{ORB_ID(rover_steering_setpoint)};
+	uORB::Publication<quadruped_leg_status_s> _leg_status_pub{ORB_ID(quadruped_leg_status)};
+	uORB::Publication<rover_throttle_setpoint_s> _rover_throttle_pub{ORB_ID(rover_throttle_setpoint)};
+	uORB::Publication<rover_steering_setpoint_s> _rover_steering_pub{ORB_ID(rover_steering_setpoint)};
 
-        DEFINE_PARAMETERS(
-                (ParamInt<px4::params::QD_MODE>) _param_qd_mode
-        )
+	DEFINE_PARAMETERS(
+		(ParamInt<px4::params::QD_MODE>)      _param_qd_mode,
+		(ParamFloat<px4::params::QD_THR_GAIN>) _param_qd_thr_gain,
+		(ParamFloat<px4::params::QD_STR_GAIN>) _param_qd_str_gain,
+		(ParamFloat<px4::params::QD_GAIT_FREQ>) _param_qd_gait_freq,
+		(ParamFloat<px4::params::QD_GAIT_AMP>)  _param_qd_gait_amp
+	)
+
+	static constexpr uint8_t rm_index[4] {1, 5, 9, 13};
+	static constexpr uint8_t lm_index[4] {2, 6, 10, 14};
+
 
 };

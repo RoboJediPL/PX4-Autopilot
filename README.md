@@ -42,6 +42,11 @@ The module exposes runtime parameters:
 * `QD_MODE` - selects wheel (`0`) or leg (`1`) operation.
 * `QD_THR_GAIN` - wheel throttle gain in wheel mode.
 * `QD_STR_GAIN` - wheel steering gain in wheel mode.
+* `QD_GAIT_FREQ` - gait frequency in leg mode (Hz).
+* `QD_GAIT_AMP` - leg rotation amplitude in leg mode (rad).
+
+Joint position and velocity arrays contain 16 elements in the order
+`[FL_TM, FL_RM, FL_LM, FL_WM, FR_TM, FR_RM, FR_LM, FR_WM, RL_TM, RL_RM, RL_LM, RL_WM, RR_TM, RR_RM, RR_LM, RR_WM]`.
 
 Run `Tools/setup/ubuntu.sh` once to install the build and formatting dependencies required to
 compile the quadruped firmware and run `make check_format`.

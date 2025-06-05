@@ -33,111 +33,148 @@
 
 #include "QuadrupedControl.hpp"
 
-QuadrupedControl::QuadrupedControl() :
-        ModuleParams(nullptr),
-        ScheduledWorkItem(MODULE_NAME, px4::wq_configurations::rate_ctrl)
+#include <lib/mathlib/mathlib.h>
+// Experimental quadruped module supporting both wheel drive and leg control.
+// Wheel mode converts leg velocity commands into rover throttle and steering
+// setpoints, while leg mode can run a simple gait generator or republish the
+// commanded joint states.
 
+
+QuadrupedControl::QuadrupedControl() :
+	ModuleParams(nullptr),
+	ScheduledWorkItem(MODULE_NAME, px4::wq_configurations::rate_ctrl)
+
+    
 {
 }
 
 bool QuadrupedControl::init()
 {
-        ScheduleOnInterval(10_ms);
-        return true;
+	ScheduleOnInterval(10_ms);
+	return true;
+
 }
 
 void QuadrupedControl::updateParams()
 {
-        ModuleParams::updateParams();
+	ModuleParams::updateParams();
+
 }
 
 void QuadrupedControl::Run()
 {
-        if (should_exit()) {
-                ScheduleClear();
-                exit_and_cleanup();
-                return;
-        }
+	if (should_exit()) {
+		ScheduleClear();
+		exit_and_cleanup();
+		return;
+	}
 
-        if (_parameter_update_sub.updated()) {
-                parameter_update_s p{};
-                _parameter_update_sub.copy(&p);
-                updateParams();
-        }
+	if (_parameter_update_sub.updated()) {
+		parameter_update_s p{};
+		_parameter_update_sub.copy(&p);
+		updateParams();
+	}
 
-       quadruped_leg_command_s cmd{};
+	quadruped_leg_command_s cmd{};
 
-       if (_param_qd_mode.get() == 0) { // wheel mode
-               if (_leg_command_sub.update(&cmd)) {
-                       const float right = cmd.joint_velocity[0];
-                       const float left  = cmd.joint_velocity[1];
+	if (_param_qd_mode.get() == 0) { // wheel mode
+		if (_leg_command_sub.update(&cmd)) {
+			const float right = 0.5f * (cmd.joint_velocity[7] + cmd.joint_velocity[15]);
+			const float left  = 0.5f * (cmd.joint_velocity[3] + cmd.joint_velocity[11]);
 
-                       rover_throttle_setpoint_s thr{};
-                       thr.timestamp = hrt_absolute_time();
-                       thr.throttle_body_x = (right + left) * 0.5f;
-                       thr.throttle_body_y = 0.f;
-                       _rover_throttle_pub.publish(thr);
+			const float avg = (right + left) * 0.5f;
 
-                       rover_steering_setpoint_s steer{};
-                       steer.timestamp = thr.timestamp;
-                       steer.normalized_speed_diff = right - left;
-                       _rover_steering_pub.publish(steer);
-               }
+			rover_throttle_setpoint_s thr{};
+			thr.timestamp = hrt_absolute_time();
+			thr.throttle_body_x = avg * _param_qd_thr_gain.get();
+			thr.throttle_body_y = 0.f;
+			_rover_throttle_pub.publish(thr);
 
-               wheel_encoders_s wheel{};
+			rover_steering_setpoint_s steer{};
+			steer.timestamp = thr.timestamp;
+			steer.normalized_speed_diff = (right - left) * _param_qd_str_gain.get();
+			_rover_steering_pub.publish(steer);
+		}
 
-               if (_wheel_encoder_sub.update(&wheel)) {
-                       quadruped_leg_status_s status{};
-                       status.timestamp = wheel.timestamp;
-                       memset(status.joint_position, 0, sizeof(status.joint_position));
-                       memset(status.joint_velocity, 0, sizeof(status.joint_velocity));
-                       status.joint_position[0] = wheel.wheel_angle[0];
-                       status.joint_position[1] = wheel.wheel_angle[1];
-                       status.joint_velocity[0] = wheel.wheel_speed[0];
-                       status.joint_velocity[1] = wheel.wheel_speed[1];
-                       _leg_status_pub.publish(status);
-               }
+		wheel_encoders_s wheel{};
 
-       } else {
-               if (_leg_command_sub.update(&cmd)) {
-                       quadruped_leg_status_s status{};
-                       status.timestamp = hrt_absolute_time();
-                       memcpy(status.joint_position, cmd.joint_position, sizeof(status.joint_position));
-                       memcpy(status.joint_velocity, cmd.joint_velocity, sizeof(status.joint_velocity));
-                       _leg_status_pub.publish(status);
-               }
-       }
+		if (_wheel_encoder_sub.update(&wheel)) {
+			quadruped_leg_status_s status{};
+			status.timestamp = wheel.timestamp;
+			memset(status.joint_position, 0, sizeof(status.joint_position));
+			memset(status.joint_velocity, 0, sizeof(status.joint_velocity));
+			// map wheel encoder data to WM joints
+			status.joint_position[3]  = wheel.wheel_angle[0]; // FL_WM
+			status.joint_position[7]  = wheel.wheel_angle[1]; // FR_WM
+			status.joint_position[11] = wheel.wheel_angle[2]; // RL_WM
+			status.joint_position[15] = wheel.wheel_angle[3]; // RR_WM
+			status.joint_velocity[3]  = wheel.wheel_speed[0];
+			status.joint_velocity[7]  = wheel.wheel_speed[1];
+			status.joint_velocity[11] = wheel.wheel_speed[2];
+			status.joint_velocity[15] = wheel.wheel_speed[3];
+			_leg_status_pub.publish(status);
+		}
 
+	} else {
+		const hrt_abstime now = hrt_absolute_time();
+		const float t = now * 1e-6f;
+		const float freq = _param_qd_gait_freq.get();
+		const float amp = _param_qd_gait_amp.get();
+		const float omega = 2.f * M_PI_F * freq;
+
+		quadruped_leg_status_s status{};
+		status.timestamp = now;
+		memset(status.joint_position, 0, sizeof(status.joint_position));
+		memset(status.joint_velocity, 0, sizeof(status.joint_velocity));
+
+		for (int i = 0; i < 4; i++) {
+			float phase = omega * t + ((i % 2) ? M_PI_F : 0.f);
+			float pos = amp * sinf(phase);
+			float vel = amp * omega * cosf(phase);
+
+			status.joint_position[rm_index[i]] = pos;
+			status.joint_velocity[rm_index[i]] = vel;
+
+			status.joint_position[lm_index[i]] = 0.5f * amp * cosf(phase);
+			status.joint_velocity[lm_index[i]] = -0.5f * amp * omega * sinf(phase);
+		}
+
+		_leg_status_pub.publish(status);
+	}
+
+  
 }
 
 int QuadrupedControl::task_spawn(int argc, char *argv[])
 {
-        QuadrupedControl *instance = new QuadrupedControl();
+	QuadrupedControl *instance = new QuadrupedControl();
 
-        if (instance && instance->init()) {
-                _object.store(instance);
-                _task_id = task_id_is_work_queue; // task id for scheduled work item
-                return 0;
-        }
+	if (instance && instance->init()) {
+		_object.store(instance);
+		_task_id = task_id_is_work_queue; // task id for scheduled work item
+		return 0;
+	}
 
-        delete instance;
-        return -1;
+	delete instance;
+	return -1;
 
+  
 }
 
 int QuadrupedControl::custom_command(int argc, char *argv[])
 {
-        return print_usage("unknown command");
+	return print_usage("unknown command");
 }
 
 int QuadrupedControl::print_usage(const char *reason)
 {
-        if (reason) {
-                PX4_INFO("%s", reason);
-        }
+	if (reason) {
+		PX4_INFO("%s", reason);
+	}
 
-        PRINT_MODULE_DESCRIPTION(
-                R"DESCR(
+	PRINT_MODULE_DESCRIPTION(
+		R"DESCR(
+
 ### Description
 Simple quadruped control module example. It republishes leg commands as status.
 )DESCR");

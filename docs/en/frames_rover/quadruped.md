@@ -31,6 +31,14 @@ In *wheel mode* the commanded joint velocities are translated into `rover_thrott
 
 This feature is experimental and may require additional integration for specific hardware like the Unitree B2-W. Contributions are welcome.
 
+## Telemetry
+
+Wheel angles and velocities from all four wheels must be published on the
+`wheel_encoders` topic so the module can translate them into joint status in
+wheel mode. The resulting
+joint positions and velocities are sent over MAVLink via the
+`QUADRUPED_LEG_STATUS` stream for monitoring.
+
 ## Building and Flashing for Pixhawk 4
 
 Build the quadruped firmware using the dedicated board target:
@@ -48,5 +56,7 @@ After boot, the `quadruped_control` module starts automatically.
 * `QD_MODE` - 0: wheel mode, 1: leg mode.
 * `QD_THR_GAIN` - wheel throttle gain in wheel mode.
 * `QD_STR_GAIN` - wheel steering gain in wheel mode.
+* `QD_GAIT_FREQ` - gait frequency in Hz when using the internal gait generator.
+* `QD_GAIT_AMP`  - leg rotation amplitude in radians for the gait generator.
 
-In leg mode the module publishes joint states so you can implement your own gait generator.
+In leg mode the module runs a simple trot gait based on these parameters and publishes joint states.
