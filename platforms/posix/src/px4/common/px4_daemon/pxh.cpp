@@ -101,16 +101,16 @@ int Pxh::process_line(const std::string &line, bool silently_fail)
 
 		// Note that argv[argc] always needs to be a nullptr.
 		// Therefore add one more entry.
-		const char *arg[words.size() + 1];
+		std::vector<const char *> arg(words.size() + 1);
 
-		for (unsigned i = 0; i < words.size(); ++i) {
-			arg[i] = (char *)words[i].c_str();
+		for (size_t i = 0; i < words.size(); ++i) {
+			arg[i] = words[i].c_str();
 		}
 
 		// Explicitly set this nullptr.
 		arg[words.size()] = nullptr;
 
-		int retval = _apps[command](words.size(), (char **)arg);
+		int retval = _apps[command](words.size(), const_cast<char **>(arg.data()));
 
 		if (retval) {
 			if (!silently_fail) {
