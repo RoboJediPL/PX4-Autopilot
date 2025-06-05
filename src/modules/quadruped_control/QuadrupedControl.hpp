@@ -34,12 +34,8 @@
 #pragma once
 
 // Header for experimental quadruped control module supporting both wheels and legs.
-// Each leg has four motors: Turn (TM), Rotate (RM), Lever (LM) and Wheel (WM).
-// The joint arrays are ordered as:
-// [FL_TM, FL_RM, FL_LM, FL_WM, FR_TM, FR_RM, FR_LM, FR_WM,
-//  RL_TM, RL_RM, RL_LM, RL_WM, RR_TM, RR_RM, RR_LM, RR_WM].
-// Wheel mode converts WM velocities into rover throttle/steering setpoints
-// while leg mode forwards commanded joint states directly.
+// Wheel mode converts leg velocity commands to rover-style throttle and steering
+// setpoints, while leg mode forwards commanded joint states directly.
 
 #include <px4_platform_common/module.h>
 #include <px4_platform_common/module_params.h>
