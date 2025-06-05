@@ -33,51 +33,31 @@
 
 #pragma once
 
+#include <gz/sim/System.hh>
+#include <gz/sim/Model.hh>
+#include <gz/transport/Node.hh>
+#include <vector>
 
-#include <px4_platform_common/module.h>
-#include <px4_platform_common/module_params.h>
-#include <px4_platform_common/px4_work_queue/ScheduledWorkItem.hpp>
-
-#include <uORB/Subscription.hpp>
-#include <uORB/Publication.hpp>
-#include <uORB/topics/parameter_update.h>
-#include <uORB/topics/vehicle_control_mode.h>
-#include <uORB/topics/quadruped_leg_command.h>
-#include <uORB/topics/quadruped_leg_status.h>
-#include <uORB/topics/wheel_encoders.h>
-#include <uORB/topics/rover_throttle_setpoint.h>
-#include <uORB/topics/rover_steering_setpoint.h>
-
-using namespace time_literals;
-
-class QuadrupedControl : public ModuleBase<QuadrupedControl>, public ModuleParams,
-        public px4::ScheduledWorkItem
+namespace custom
+{
+class WheelEncoderSystem : public gz::sim::System,
+	public gz::sim::ISystemConfigure,
+	public gz::sim::ISystemPreUpdate
 {
 public:
-        QuadrupedControl();
-        ~QuadrupedControl() override = default;
+	void Configure(const gz::sim::Entity &entity,
+		       const std::shared_ptr<const sdf::Element> &sdf,
+		       gz::sim::EntityComponentManager &ecm,
+		       gz::sim::EventManager &eventMgr) override;
 
-        static int task_spawn(int argc, char *argv[]);
-        static int custom_command(int argc, char *argv[]);
-        static int print_usage(const char *reason = nullptr);
-
-        bool init();
+	void PreUpdate(const gz::sim::UpdateInfo &info,
+		       gz::sim::EntityComponentManager &ecm) override;
 
 private:
-        void Run() override;
-        void updateParams() override;
-
-        uORB::Subscription _parameter_update_sub{ORB_ID(parameter_update)};
-        uORB::Subscription _vehicle_control_mode_sub{ORB_ID(vehicle_control_mode)};
-        uORB::Subscription _leg_command_sub{ORB_ID(quadruped_leg_command)};
-       uORB::Subscription _wheel_encoder_sub{ORB_ID(wheel_encoders)};
-
-        uORB::Publication<quadruped_leg_status_s> _leg_status_pub{ORB_ID(quadruped_leg_status)};
-       uORB::Publication<rover_throttle_setpoint_s> _rover_throttle_pub{ORB_ID(rover_throttle_setpoint)};
-       uORB::Publication<rover_steering_setpoint_s> _rover_steering_pub{ORB_ID(rover_steering_setpoint)};
-
-        DEFINE_PARAMETERS(
-                (ParamInt<px4::params::QD_MODE>) _param_qd_mode
-        )
-
+	gz::transport::Node _node;
+	gz::transport::Node::Publisher _wheel_pub;
+	std::vector<gz::sim::Joint> _joints;
+	std::string _model_name;
 };
+} // namespace custom
+

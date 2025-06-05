@@ -36,6 +36,7 @@
 QuadrupedControl::QuadrupedControl() :
         ModuleParams(nullptr),
         ScheduledWorkItem(MODULE_NAME, px4::wq_configurations::rate_ctrl)
+
 {
 }
 
@@ -106,6 +107,7 @@ void QuadrupedControl::Run()
                        _leg_status_pub.publish(status);
                }
        }
+
 }
 
 int QuadrupedControl::task_spawn(int argc, char *argv[])
@@ -120,6 +122,7 @@ int QuadrupedControl::task_spawn(int argc, char *argv[])
 
         delete instance;
         return -1;
+
 }
 
 int QuadrupedControl::custom_command(int argc, char *argv[])
