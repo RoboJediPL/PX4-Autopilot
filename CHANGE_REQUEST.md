@@ -16,7 +16,8 @@ This document outlines the proposed updates for running a Unitree B2-W quadruped
 - Keep support for the Roboclaw driver or other motor controllers required by the hardware.
 
 ## 4. Telemetry and MAVLink
-- Use existing MAVLink streams to send leg status and wheel encoder data. Add new MAVLink messages if more detailed telemetry is required.
+- Publish leg status via a new `QUADRUPED_LEG_STATUS` MAVLink stream so joint positions and velocities can be monitored in real time.
+- Continue to forward wheel encoder data over existing topics and MAVLink messages.
 
 ## 5. Documentation
 - Document build instructions for the quadruped firmware, describe `QD_MODE`, and emphasize that rover functionality is experimental.
