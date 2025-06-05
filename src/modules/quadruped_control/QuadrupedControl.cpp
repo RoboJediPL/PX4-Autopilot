@@ -74,7 +74,6 @@ void QuadrupedControl::Run()
 		if (_leg_command_sub.update(&cmd)) {
 			const float right = 0.5f * (cmd.joint_velocity[7] + cmd.joint_velocity[15]);
 			const float left  = 0.5f * (cmd.joint_velocity[3] + cmd.joint_velocity[11]);
-
 			const float avg = (right + left) * 0.5f;
 
 			rover_throttle_setpoint_s thr{};
