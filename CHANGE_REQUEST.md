@@ -68,4 +68,3 @@ The quadruped control module and board configuration have been added. Format che
 This repository is distributed under the BSD 3-Clause license. The software is provided
 "AS IS" without warranty of any kind. Quadruped and rover features rely on the
 experimental rover stack, so use this functionality at your own risk.
-
