@@ -15,6 +15,13 @@ In *wheel mode* the commanded joint velocities are translated into `rover_thrott
 
 This feature is experimental and may require additional integration for specific hardware like the Unitree B2-W. Contributions are welcome.
 
+## Telemetry
+
+Wheel angles and velocities must be published on the `wheel_encoders` topic so
+the module can translate them into joint status in wheel mode. The resulting
+joint positions and velocities are sent over MAVLink via the
+`QUADRUPED_LEG_STATUS` stream for monitoring.
+
 ## Building and Flashing for Pixhawk 4
 
 Build the quadruped firmware using the dedicated board target:
