@@ -40,21 +40,3 @@
  */
 PARAM_DEFINE_INT32(QD_MODE, 0);
 
-/**
- * Wheel throttle gain
- *
- * Scales the average wheel speed into a throttle command.
- *
- * @group Quadruped
- */
-PARAM_DEFINE_FLOAT(QD_THR_GAIN, 1.0f);
-
-/**
- * Wheel steering gain
- *
- * Scales the differential wheel speed into a steering command.
- *
- * @group Quadruped
- */
-PARAM_DEFINE_FLOAT(QD_STR_GAIN, 1.0f);
-
