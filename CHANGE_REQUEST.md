@@ -29,7 +29,7 @@ This document outlines the required changes to operate the Unitree B2-W quadrupe
 
 ## License and Disclaimer
 This repository is distributed under the BSD-3-Clause license. The software is provided "AS IS" without warranty of any kind. Quadruped and rover features rely on the experimental rover stack, so use this functionality at your own risk.
-=======
+
 This document outlines the proposed updates for running a Unitree B2-W quadruped with wheels using a Pixhawk 4 loaded with this PX4 firmware. The goal is to support both wheel-based drive and leg-based walking modes.
 
 ## 1. Quadruped Support Module
