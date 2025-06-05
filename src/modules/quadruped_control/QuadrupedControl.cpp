@@ -72,9 +72,8 @@ void QuadrupedControl::Run()
 
 	if (_param_qd_mode.get() == 0) { // wheel mode
 		if (_leg_command_sub.update(&cmd)) {
-			const float right = cmd.joint_velocity[0];
-			const float left  = cmd.joint_velocity[1];
-
+			const float right = 0.5f * (cmd.joint_velocity[7] + cmd.joint_velocity[15]);
+			const float left  = 0.5f * (cmd.joint_velocity[3] + cmd.joint_velocity[11]);
 			const float avg = (right + left) * 0.5f;
 
 			rover_throttle_setpoint_s thr{};
@@ -96,10 +95,15 @@ void QuadrupedControl::Run()
 			status.timestamp = wheel.timestamp;
 			memset(status.joint_position, 0, sizeof(status.joint_position));
 			memset(status.joint_velocity, 0, sizeof(status.joint_velocity));
-			status.joint_position[0] = wheel.wheel_angle[0];
-			status.joint_position[1] = wheel.wheel_angle[1];
-			status.joint_velocity[0] = wheel.wheel_speed[0];
-			status.joint_velocity[1] = wheel.wheel_speed[1];
+			// map wheel encoder data to WM joints
+			status.joint_position[3]  = wheel.wheel_angle[0]; // FL_WM
+			status.joint_position[7]  = wheel.wheel_angle[1]; // FR_WM
+			status.joint_position[11] = wheel.wheel_angle[2]; // RL_WM
+			status.joint_position[15] = wheel.wheel_angle[3]; // RR_WM
+			status.joint_velocity[3]  = wheel.wheel_speed[0];
+			status.joint_velocity[7]  = wheel.wheel_speed[1];
+			status.joint_velocity[11] = wheel.wheel_speed[2];
+			status.joint_velocity[15] = wheel.wheel_speed[3];
 			_leg_status_pub.publish(status);
 		}
 
