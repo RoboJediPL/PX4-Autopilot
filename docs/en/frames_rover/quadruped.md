@@ -11,6 +11,22 @@ PX4 provides an experimental module for controlling quadruped robots that can wa
 
 The `quadruped_control` module converts leg commands to wheel setpoints in *wheel mode* and republishes joint states when in *leg mode*. Use the `QD_MODE` parameter to switch between modes.
 
+Each leg has four motors:
+
+* **TM** - Turn motor adjusts the wheel heading (\-45° to +45°).
+* **RM** - Rotates the entire leg forward/backward (\-45° to +45°).
+* **LM** - Lever motor actuates the lower leg.
+* **WM** - Wheel motor drives the wheel.
+
+The 16‑element joint arrays used by the module follow this order:
+
+```
+[FL_TM, FL_RM, FL_LM, FL_WM,
+ FR_TM, FR_RM, FR_LM, FR_WM,
+ RL_TM, RL_RM, RL_LM, RL_WM,
+ RR_TM, RR_RM, RR_LM, RR_WM]
+```
+
 In *wheel mode* the commanded joint velocities are translated into `rover_throttle_setpoint` and `rover_steering_setpoint` messages. These setpoints can then be processed by the existing rover controllers to drive the wheel motors.
 
 This feature is experimental and may require additional integration for specific hardware like the Unitree B2-W. Contributions are welcome.
