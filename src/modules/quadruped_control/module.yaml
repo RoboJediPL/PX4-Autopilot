@@ -6,11 +6,14 @@ parameters:
       QD_MODE:
         description:
           short: Quadruped mode
+
           long: "0: wheel mode, 1: leg mode"
+
         type: int32
         min: 0
         max: 1
         default: 0
+
       QD_THR_GAIN:
         description:
           short: Wheel throttle gain
@@ -51,3 +54,5 @@ parameters:
         increment: 0.01
         decimal: 2
         default: 0.4
+
+

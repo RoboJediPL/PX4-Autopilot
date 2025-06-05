@@ -32,6 +32,7 @@
  ****************************************************************************/
 
 #include "QuadrupedControl.hpp"
+
 #include <lib/mathlib/mathlib.h>
 // Experimental quadruped module supporting both wheel drive and leg control.
 // Wheel mode converts leg velocity commands into rover throttle and steering
@@ -42,6 +43,8 @@
 QuadrupedControl::QuadrupedControl() :
 	ModuleParams(nullptr),
 	ScheduledWorkItem(MODULE_NAME, px4::wq_configurations::rate_ctrl)
+
+    
 {
 }
 
@@ -49,11 +52,13 @@ bool QuadrupedControl::init()
 {
 	ScheduleOnInterval(10_ms);
 	return true;
+
 }
 
 void QuadrupedControl::updateParams()
 {
 	ModuleParams::updateParams();
+
 }
 
 void QuadrupedControl::Run()
@@ -136,6 +141,8 @@ void QuadrupedControl::Run()
 
 		_leg_status_pub.publish(status);
 	}
+
+  
 }
 
 int QuadrupedControl::task_spawn(int argc, char *argv[])
@@ -150,6 +157,8 @@ int QuadrupedControl::task_spawn(int argc, char *argv[])
 
 	delete instance;
 	return -1;
+
+  
 }
 
 int QuadrupedControl::custom_command(int argc, char *argv[])
@@ -165,6 +174,7 @@ int QuadrupedControl::print_usage(const char *reason)
 
 	PRINT_MODULE_DESCRIPTION(
 		R"DESCR(
+
 ### Description
 Simple quadruped control module example. It republishes leg commands as status.
 )DESCR");
