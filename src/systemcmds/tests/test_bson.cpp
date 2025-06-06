@@ -41,6 +41,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <vector>
 #include <limits.h>
 #include <math.h>
 
@@ -175,9 +176,9 @@ decode_callback(bson_decoder_t decoder, bson_node_t node)
 			return 1;
 		}
 
-		char sbuf[len];
+		std::vector<char> sbuf(len);
 
-		if (bson_decoder_copy_data(decoder, sbuf)) {
+		if (bson_decoder_copy_data(decoder, sbuf.data())) {
 			PX4_ERR("FAIL: decoder: string1 copy failed");
 			return 1;
 		}
@@ -192,8 +193,8 @@ decode_callback(bson_decoder_t decoder, bson_node_t node)
 			return 1;
 		}
 
-		if (strcmp(sbuf, sample_string) != 0) {
-			PX4_ERR("FAIL: decoder: string1 value '%s', expected '%s'", sbuf, sample_string);
+		if (strcmp(sbuf.data(), sample_string) != 0) {
+			PX4_ERR("FAIL: decoder: string1 value '%s', expected '%s'", sbuf.data(), sample_string);
 			return 1;
 		}
 
@@ -219,9 +220,9 @@ decode_callback(bson_decoder_t decoder, bson_node_t node)
 			return 1;
 		}
 
-		uint8_t dbuf[len];
+		std::vector<uint8_t> dbuf(len);
 
-		if (bson_decoder_copy_data(decoder, dbuf)) {
+		if (bson_decoder_copy_data(decoder, dbuf.data())) {
 			PX4_ERR("FAIL: decoder: data1 copy failed");
 			return 1;
 		}
@@ -231,7 +232,7 @@ decode_callback(bson_decoder_t decoder, bson_node_t node)
 			return 1;
 		}
 
-		if (memcmp(sample_data, dbuf, len) != 0) {
+		if (memcmp(sample_data, dbuf.data(), len) != 0) {
 			PX4_ERR("FAIL: decoder: data1 compare fail");
 			return 1;
 		}

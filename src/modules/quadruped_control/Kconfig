@@ -1,0 +1,5 @@
+menuconfig MODULES_QUADRUPED_CONTROL
+    bool "quadruped_control"
+    default n
+    ---help---
+        Enable quadruped control module
