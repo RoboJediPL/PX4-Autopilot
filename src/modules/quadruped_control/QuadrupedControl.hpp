@@ -41,8 +41,6 @@
 // Wheel mode converts WM velocities into rover throttle/steering setpoints
 // while leg mode forwards commanded joint states directly.
 
-
-
 #include <px4_platform_common/module.h>
 #include <px4_platform_common/module_params.h>
 #include <px4_platform_common/px4_work_queue/ScheduledWorkItem.hpp>
@@ -60,7 +58,6 @@
 using namespace time_literals;
 
 class QuadrupedControl : public ModuleBase<QuadrupedControl>, public ModuleParams,
-
 	public px4::ScheduledWorkItem
 {
 public:
@@ -96,6 +93,4 @@ private:
 
 	static constexpr uint8_t rm_index[4] {1, 5, 9, 13};
 	static constexpr uint8_t lm_index[4] {2, 6, 10, 14};
-
-
 };
