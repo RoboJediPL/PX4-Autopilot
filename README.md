@@ -61,6 +61,14 @@ PX4_GZ_WORLD=quadruped make px4_sitl gz_quadruped
 
 This launches Gazebo with the quadruped model and the wheel encoder plugin.
 
+To test the quadruped in simulation run:
+
+```bash
+PX4_GZ_WORLD=quadruped make px4_sitl gz_quadruped
+```
+
+This launches Gazebo with the quadruped model and the wheel encoder plugin.
+
 
 ## Changing Code and Contributing
 
