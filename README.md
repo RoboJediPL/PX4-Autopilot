@@ -63,6 +63,9 @@ Initialize the Gazebo models submodule before running the simulator:
 git submodule update --init Tools/simulation/gz
 ```
 
+The quadruped model and world files are located under
+`Tools/simulation/quadruped`.
+
 To test the quadruped in simulation run:
 
 ```bash
