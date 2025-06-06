@@ -17,6 +17,7 @@ PX4 is highly portable, OS-independent and supports Linux, NuttX and MacOS out o
   * [VTOL](https://docs.px4.io/main/en/frames_vtol/)
   * [Autogyro](https://docs.px4.io/main/en/frames_autogyro/)
   * [Rover](https://docs.px4.io/main/en/frames_rover/)
+  * [Quadruped](https://docs.px4.io/main/en/frames_rover/quadruped.html) *(experimental)*
   * many more experimental types (Blimps, Boats, Submarines, High Altitude Balloons, Spacecraft, etc)
 * Releases: [Downloads](https://github.com/PX4/PX4-Autopilot/releases)
 
@@ -27,6 +28,28 @@ Release notes and supporting information for PX4 releases can be found on the [D
 ## Building a PX4 based drone, rover, boat or robot
 
 The [PX4 User Guide](https://docs.px4.io/main/en/) explains how to assemble [supported vehicles](https://docs.px4.io/main/en/airframes/airframe_reference.html) and fly drones with PX4. See the [forum and chat](https://docs.px4.io/main/en/#getting-help) if you need help!
+
+### Quadruped Build
+To build the experimental quadruped firmware for Pixhawk\_4, run:
+
+```bash
+make px4_fmu-v5_quadruped
+```
+
+Flash the resulting firmware to your Pixhawk 4 to enable the `quadruped_control` module.
+
+The module exposes runtime parameters:
+* `QD_MODE` - selects wheel (`0`) or leg (`1`) operation.
+* `QD_THR_GAIN` - wheel throttle gain in wheel mode.
+* `QD_STR_GAIN` - wheel steering gain in wheel mode.
+* `QD_GAIT_FREQ` - gait frequency in leg mode (Hz).
+* `QD_GAIT_AMP` - leg rotation amplitude in leg mode (rad).
+
+Joint position and velocity arrays contain 16 elements in the order
+`[FL_TM, FL_RM, FL_LM, FL_WM, FR_TM, FR_RM, FR_LM, FR_WM, RL_TM, RL_RM, RL_LM, RL_WM, RR_TM, RR_RM, RR_LM, RR_WM]`.
+
+Run `Tools/setup/ubuntu.sh` once to install the build and formatting dependencies required to
+compile the quadruped firmware and run `make check_format`.
 
 
 ## Changing Code and Contributing
