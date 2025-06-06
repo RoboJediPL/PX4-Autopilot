@@ -57,6 +57,12 @@ the quadruped simulation. On macOS the packages can be installed using Homebrew:
 brew install gz-harmonic
 ```
 
+Initialize the Gazebo models submodule before running the simulator:
+
+```bash
+git submodule update --init Tools/simulation/gz
+```
+
 To test the quadruped in simulation run:
 
 ```bash
