@@ -80,20 +80,11 @@ To setup the environment to be able to build for Pixhawk/NuttX hardware (and ins
 
 To setup the environment for [Gazebo Classic](../sim_gazebo_classic/index.md) simulation:
 
-1. Run the following commands in your shell:
+1. 다음 명령을 실행하여 Intel Threading Building Blocks (TBB)를 설치합니다:
 
   ```sh
-  brew unlink tbb
-  sed -i.bak '/disable! date:/s/^/  /; /disable! date:/s/./#/3' $(brew --prefix)/Library/Taps/homebrew/homebrew-core/Formula/tbb@2020.rb
-  brew install tbb@2020
-  brew link tbb@2020
+  brew install tbb
   ```
-
-  ::: info
-  September 2021: The commands above are a workaround to this bug: [PX4-Autopilot#17644](https://github.com/PX4/PX4-Autopilot/issues/17644).
-  They can be removed once it is fixed (along with this note).
-
-:::
 
 2. To install SITL simulation with Gazebo Classic:
 
