@@ -65,7 +65,8 @@ In leg mode the module runs a simple trot gait based on these parameters and pub
 
 The repository provides a basic Gazebo simulation model and world for testing
 the quadruped control module. Make sure the `Tools/simulation/gz` submodule is
-initialized:
+initialized and that Gazebo Harmonic is installed (the `Tools/setup/ubuntu.sh`
+script will install the required `gz-harmonic` package):
 
 ```bash
 git submodule update --init Tools/simulation/gz
