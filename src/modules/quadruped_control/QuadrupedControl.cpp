@@ -150,6 +150,7 @@ int QuadrupedControl::task_spawn(int argc, char *argv[])
 
 	delete instance;
 	return -1;
+
 }
 
 int QuadrupedControl::custom_command(int argc, char *argv[])
