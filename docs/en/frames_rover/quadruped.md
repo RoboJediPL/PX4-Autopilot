@@ -60,3 +60,23 @@ After boot, the `quadruped_control` module starts automatically.
 * `QD_GAIT_AMP`  - leg rotation amplitude in radians for the gait generator.
 
 In leg mode the module runs a simple trot gait based on these parameters and publishes joint states.
+
+## Simulation
+
+The repository provides a basic Gazebo simulation model and world for testing
+the quadruped control module. Make sure the `Tools/simulation/gz` submodule is
+initialized:
+
+```bash
+git submodule update --init Tools/simulation/gz
+```
+
+Run the simulation with:
+
+```bash
+PX4_GZ_WORLD=quadruped make px4_sitl gz_quadruped
+```
+
+This launches Gazebo with the `quadruped` world and model, including the
+`WheelEncoderSystem` plugin that publishes wheel encoder data for the rover
+controllers.
