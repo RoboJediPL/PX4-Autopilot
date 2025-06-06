@@ -1,0 +1,53 @@
+module_name: Quadruped Control
+
+parameters:
+  - group: Quadruped
+    definitions:
+      QD_MODE:
+        description:
+          short: Quadruped mode
+          long: "0: wheel mode, 1: leg mode"
+        type: int32
+        min: 0
+        max: 1
+        default: 0
+      QD_THR_GAIN:
+        description:
+          short: Wheel throttle gain
+          long: Scale factor applied to average wheel speed when generating rover throttle setpoints.
+        type: float
+        min: 0
+        max: 10
+        increment: 0.01
+        decimal: 2
+        default: 1.0
+      QD_STR_GAIN:
+        description:
+          short: Wheel steering gain
+          long: Scale factor applied to differential wheel speed when generating rover steering setpoints.
+        type: float
+        min: 0
+        max: 10
+        increment: 0.01
+        decimal: 2
+        default: 1.0
+      QD_GAIT_FREQ:
+        description:
+          short: Gait frequency
+          long: Step frequency when running the internal leg gait generator (Hz).
+        type: float
+        min: 0
+        max: 5
+        increment: 0.01
+        decimal: 2
+        default: 1.0
+      QD_GAIT_AMP:
+        description:
+          short: Gait amplitude
+          long: Step amplitude for leg rotation (radians).
+        type: float
+        min: 0
+        max: 1.57
+        increment: 0.01
+        decimal: 2
+        default: 0.4
