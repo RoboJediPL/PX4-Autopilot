@@ -127,19 +127,21 @@ else()
 			get_filename_component("world_name" ${world} NAME_WE)
 
 			if(world_name STREQUAL "default")
-				add_custom_target(gz_${model_name}
-					COMMAND ${CMAKE_COMMAND} -E echo "ERROR: Gazebo simulation dependencies not found!"
-					COMMAND ${CMAKE_COMMAND} -E echo "  - For installation instructions, see: https://gazebosim.org/docs/harmonic/install_ubuntu/"
-					COMMAND ${CMAKE_COMMAND} -E false
-					VERBATIM
-				)
+                                add_custom_target(gz_${model_name}
+                                        COMMAND ${CMAKE_COMMAND} -E echo "ERROR: Gazebo simulation dependencies not found!"
+                                        COMMAND ${CMAKE_COMMAND} -E echo "  - For installation instructions, see: https://gazebosim.org/docs/harmonic/install_ubuntu/"
+                                        COMMAND ${CMAKE_COMMAND} -E echo "  - Or run 'Tools/setup/ubuntu.sh' to install them"
+                                        COMMAND ${CMAKE_COMMAND} -E false
+                                        VERBATIM
+                                )
 			else()
-				add_custom_target(gz_${model_name}_${world_name}
-					COMMAND ${CMAKE_COMMAND} -E echo "ERROR: Gazebo simulation dependencies not found!"
-					COMMAND ${CMAKE_COMMAND} -E echo "  - For installation instructions, see: https://gazebosim.org/docs/harmonic/install_ubuntu/"
-					COMMAND ${CMAKE_COMMAND} -E false
-					VERBATIM
-				)
+                                add_custom_target(gz_${model_name}_${world_name}
+                                        COMMAND ${CMAKE_COMMAND} -E echo "ERROR: Gazebo simulation dependencies not found!"
+                                        COMMAND ${CMAKE_COMMAND} -E echo "  - For installation instructions, see: https://gazebosim.org/docs/harmonic/install_ubuntu/"
+                                        COMMAND ${CMAKE_COMMAND} -E echo "  - Or run 'Tools/setup/ubuntu.sh' to install them"
+                                        COMMAND ${CMAKE_COMMAND} -E false
+                                        VERBATIM
+                                )
 			endif()
 		endforeach()
 	endforeach()
