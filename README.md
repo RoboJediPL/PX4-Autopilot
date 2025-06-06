@@ -8,7 +8,7 @@
 
 This repository holds the [PX4](http://px4.io) flight control solution for drones, with the main applications located in the [src/modules](https://github.com/PX4/PX4-Autopilot/tree/main/src/modules) directory. It also contains the PX4 Drone Middleware Platform, which provides drivers and middleware to run drones.
 
-PX4 is highly portable, OS-independent and supports Linux, NuttX and MacOS out of the box.
+PX4 is highly portable, OS-independent and supports Linux, NuttX and macOS out of the box.
 
 * Official Website: http://px4.io (License: BSD 3-clause, [LICENSE](https://github.com/PX4/PX4-Autopilot/blob/main/LICENSE))
 * [Supported airframes](https://docs.px4.io/main/en/airframes/airframe_reference.html) ([portfolio](https://px4.io/ecosystem/commercial-systems/)):
@@ -61,6 +61,14 @@ Initialize the Gazebo models submodule before running the simulator:
 
 ```bash
 git submodule update --init Tools/simulation/gz
+# rerun this command after `make distclean`
+git submodule update --init --recursive
+```
+
+Export the Gazebo distribution so CMake can locate the Harmonic libraries:
+
+```bash
+export GZ_DISTRO=harmonic
 ```
 
 The quadruped model and world files are located under

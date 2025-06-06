@@ -76,6 +76,14 @@ brew install gz-harmonic
 
 ```bash
 git submodule update --init Tools/simulation/gz
+# rerun after `make distclean`
+git submodule update --init --recursive
+```
+
+Export the Gazebo distribution before building:
+
+```bash
+export GZ_DISTRO=harmonic
 ```
 
 Run the simulation with:
