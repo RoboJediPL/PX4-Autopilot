@@ -80,20 +80,11 @@ If you have an Apple M1, M2 etc. Macbook, make sure to run the terminal as x86 b
 
 To setup the environment for [Gazebo Classic](../sim_gazebo_classic/index.md) simulation:
 
-1. Виконайте наступні команди в командній оболонці:
+1. Виконайте наступну команду, щоб встановити Intel Threading Building Blocks (TBB):
 
   ```sh
-  brew unlink tbb
-  sed -i.bak '/disable! date:/s/^/  /; /disable! date:/s/./#/3' $(brew --prefix)/Library/Taps/homebrew/homebrew-core/Formula/tbb@2020.rb
-  brew install tbb@2020
-  brew link tbb@2020
+  brew install tbb
   ```
-
-  ::: info
-  September 2021: The commands above are a workaround to this bug: [PX4-Autopilot#17644](https://github.com/PX4/PX4-Autopilot/issues/17644).
-  Вони можуть бути видалені після того, як вона буде виправлена (разом з цією нотаткою).
-
-:::
 
 2. Для встановлення симуляції SITL з Gazebo Classic:
 
