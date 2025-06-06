@@ -68,6 +68,12 @@ the quadruped control module. Make sure the `Tools/simulation/gz` submodule is
 initialized and that Gazebo Harmonic is installed (the `Tools/setup/ubuntu.sh`
 script will install the required `gz-harmonic` package):
 
+On macOS the package can be installed using Homebrew:
+
+```bash
+brew install gz-harmonic
+```
+
 ```bash
 git submodule update --init Tools/simulation/gz
 ```
