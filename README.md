@@ -91,6 +91,8 @@ brew install gz-harmonic  # macOS
 ```
 
 This launches Gazebo with the quadruped model and the wheel encoder plugin.
+The plugin publishes wheel speed data so the rover controllers can operate in
+wheel mode.
 
 
 ## Changing Code and Contributing
