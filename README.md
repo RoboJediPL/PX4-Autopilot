@@ -8,7 +8,7 @@
 
 This repository holds the [PX4](http://px4.io) flight control solution for drones, with the main applications located in the [src/modules](https://github.com/PX4/PX4-Autopilot/tree/main/src/modules) directory. It also contains the PX4 Drone Middleware Platform, which provides drivers and middleware to run drones.
 
-PX4 is highly portable, OS-independent and supports Linux, NuttX and MacOS out of the box.
+PX4 is highly portable, OS-independent and supports Linux, NuttX and macOS out of the box.
 
 * Official Website: http://px4.io (License: BSD 3-clause, [LICENSE](https://github.com/PX4/PX4-Autopilot/blob/main/LICENSE))
 * [Supported airframes](https://docs.px4.io/main/en/airframes/airframe_reference.html) ([portfolio](https://px4.io/ecosystem/commercial-systems/)):
@@ -50,6 +50,47 @@ Joint position and velocity arrays contain 16 elements in the order
 
 Run `Tools/setup/ubuntu.sh` once to install the build and formatting dependencies required to
 compile the quadruped firmware and run `make check_format`.
+The same script installs the Gazebo Harmonic packages (`gz-harmonic`) needed to run
+the quadruped simulation. On macOS the packages can be installed using Homebrew:
+
+```bash
+brew install gz-harmonic
+```
+
+Initialize the Gazebo models submodule before running the simulator:
+
+```bash
+git submodule update --init Tools/simulation/gz
+# rerun this command after `make distclean`
+git submodule update --init --recursive
+```
+
+Export the Gazebo distribution so CMake can locate the Harmonic libraries:
+
+```bash
+export GZ_DISTRO=harmonic
+```
+
+The quadruped model and world files are located under
+`Tools/simulation/quadruped`.
+
+To test the quadruped in simulation run:
+
+```bash
+PX4_GZ_WORLD=quadruped make px4_sitl gz_quadruped
+```
+
+If you see `unknown target 'gz_quadruped'` or a message that the Gazebo
+simulation dependencies are missing, reinitialize the submodule and ensure the
+`gz-harmonic` packages are installed:
+
+```bash
+git submodule update --init --recursive
+brew install gz-harmonic  # macOS
+# or run Tools/setup/ubuntu.sh on Linux
+```
+
+This launches Gazebo with the quadruped model and the wheel encoder plugin.
 
 
 ## Changing Code and Contributing

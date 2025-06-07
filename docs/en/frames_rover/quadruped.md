@@ -60,3 +60,47 @@ After boot, the `quadruped_control` module starts automatically.
 * `QD_GAIT_AMP`  - leg rotation amplitude in radians for the gait generator.
 
 In leg mode the module runs a simple trot gait based on these parameters and publishes joint states.
+
+## Simulation
+
+The repository provides a basic Gazebo simulation model and world for testing
+the quadruped control module. Make sure the `Tools/simulation/gz` submodule is
+initialized and that Gazebo Harmonic is installed (the `Tools/setup/ubuntu.sh`
+script will install the required `gz-harmonic` package):
+
+On macOS the package can be installed using Homebrew:
+
+```bash
+brew install gz-harmonic
+```
+
+```bash
+git submodule update --init Tools/simulation/gz
+# rerun after `make distclean`
+git submodule update --init --recursive
+```
+
+Export the Gazebo distribution before building:
+
+```bash
+export GZ_DISTRO=harmonic
+```
+
+Run the simulation with:
+
+```bash
+PX4_GZ_WORLD=quadruped make px4_sitl gz_quadruped
+```
+
+If CMake reports `unknown target 'gz_quadruped'` or that Gazebo dependencies are
+missing, update the submodule and (re)install the `gz-harmonic` packages:
+
+```bash
+git submodule update --init --recursive
+brew install gz-harmonic  # macOS
+# or run Tools/setup/ubuntu.sh on Linux
+```
+
+This launches Gazebo with the `quadruped` world and model, including the
+`WheelEncoderSystem` plugin that publishes wheel encoder data for the rover
+controllers.
