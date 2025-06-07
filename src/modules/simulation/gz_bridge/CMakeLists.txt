@@ -120,11 +120,12 @@ if (gz-transport_FOUND)
 	# Setup the environment variables: PX4_GZ_MODELS, PX4_GZ_WORLDS, GZ_SIM_RESOURCE_PATH
         configure_file(gz_env.sh.in ${PX4_BINARY_DIR}/rootfs/gz_env.sh)
 
-        # Provide alias targets for the quadruped world
-        if(TARGET gz_quadruped_quadruped)
+        # Provide alias targets for the quadruped world. Skip if the default
+        # world already created targets with these names.
+        if(TARGET gz_quadruped_quadruped AND NOT TARGET gz_quadruped)
                 add_custom_target(gz_quadruped DEPENDS gz_quadruped_quadruped)
         endif()
-        if(TARGET gz_quadruped_gait_quadruped)
+        if(TARGET gz_quadruped_gait_quadruped AND NOT TARGET gz_quadruped_gait)
                 add_custom_target(gz_quadruped_gait DEPENDS gz_quadruped_gait_quadruped)
         endif()
 
@@ -159,10 +160,10 @@ else()
 
         # Provide alias targets for the quadruped world when dependencies are
         # missing so that 'gz_quadruped' and 'gz_quadruped_gait' always exist
-        if(TARGET gz_quadruped_quadruped)
+        if(TARGET gz_quadruped_quadruped AND NOT TARGET gz_quadruped)
                 add_custom_target(gz_quadruped DEPENDS gz_quadruped_quadruped)
         endif()
-        if(TARGET gz_quadruped_gait_quadruped)
+        if(TARGET gz_quadruped_gait_quadruped AND NOT TARGET gz_quadruped_gait)
                 add_custom_target(gz_quadruped_gait DEPENDS gz_quadruped_gait_quadruped)
         endif()
 
