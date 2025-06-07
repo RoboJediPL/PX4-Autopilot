@@ -23,7 +23,7 @@ brew install gz-harmonic
 On Ubuntu install the dependencies with:
 
 ```bash
-sudo apt-get update && sudo apt-get install gz-harmonic libunwind-dev
+sudo apt-get update && sudo apt-get install gz-harmonic libunwind-dev libgz-msgs10-dev libgz-transport13-dev libgz-math7-dev libgz-utils2-dev
 ```
 If the submodule becomes detached after running `make distclean`, reinitialize it recursively:
 
