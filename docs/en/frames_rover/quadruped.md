@@ -100,9 +100,10 @@ missing, update the submodule and (re)install the `gz-harmonic` packages:
 git submodule update --init --recursive
 brew install gz-harmonic  # macOS
 # Ubuntu
-sudo apt-get update && sudo apt-get install gz-harmonic libunwind-dev
-# Ubuntu dependencies
-sudo apt-get install libgz-msgs10-dev libgz-transport13-dev libgz-math7-dev libgz-utils2-dev
+sudo apt-get update && sudo apt-get install \
+  gz-harmonic libunwind-dev \
+  libgz-msgs10-dev libgz-transport13-dev \
+  libgz-math7-dev libgz-utils2-dev
 # or run Tools/setup/ubuntu.sh on Linux
 ```
 
