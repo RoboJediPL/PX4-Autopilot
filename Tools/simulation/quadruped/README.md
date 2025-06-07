@@ -5,6 +5,8 @@ This directory contains resources for simulating a simple quadruped robot using 
 ```
 PX4_GZ_WORLD=quadruped make px4_sitl gz_quadruped
 ```
+Alternatively run `run_quadruped_sim.sh` from this folder to launch the sim.
+
 
 To run the built-in gait generator start the gait target which enables leg mode
 and publishes a simple trot pattern:
