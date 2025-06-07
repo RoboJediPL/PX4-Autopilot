@@ -215,6 +215,7 @@ and install `gz-harmonic`:
 ```bash
 git submodule update --init --recursive
 brew install gz-harmonic  # macOS
+./Tools/setup/macos.sh --sim-tools
 sudo apt-get update && sudo apt-get install gz-harmonic libunwind-dev  # Ubuntu
 ```
 

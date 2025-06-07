@@ -14,6 +14,12 @@ PX4_GZ_WORLD=quadruped make px4_sitl gz_quadruped_gait
 ```
 
 Ensure that the Gazebo models submodule is initialized and that the `gz-harmonic` package is installed.
+On macOS install the package with Homebrew:
+
+```bash
+brew install gz-harmonic
+```
+
 On Ubuntu install the dependencies with:
 
 ```bash

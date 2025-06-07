@@ -37,7 +37,10 @@ else()
     find_package(gz-transport NAMES gz-transport13)
 endif()
 
-file(GLOB gz_worlds ${PX4_SOURCE_DIR}/Tools/simulation/gz/worlds/*.sdf)
+file(GLOB gz_worlds
+    ${PX4_SOURCE_DIR}/Tools/simulation/gz/worlds/*.sdf
+    ${PX4_SOURCE_DIR}/Tools/simulation/quadruped/worlds/*.sdf
+)
 file(GLOB gz_airframes ${PX4_SOURCE_DIR}/ROMFS/px4fmu_common/init.d-posix/airframes/*_gz_*)
 
 if (gz-transport_FOUND)
@@ -89,9 +92,9 @@ if (gz-transport_FOUND)
 	# Below we setup the build targets for our worlds and models
 	# Syntax: gz_<model_name>_<world_name>
 	# Example: gz_x500_flow_forest
-	foreach(gz_airframe IN LISTS gz_airframes)
-		set(model_name)
-		string(REGEX REPLACE ".*_gz_" "" model_name ${gz_airframe})
+        foreach(gz_airframe IN LISTS gz_airframes)
+                set(model_name)
+                string(REGEX REPLACE ".*_gz_" "" model_name ${gz_airframe})
 
 		foreach(world ${gz_worlds})
 			get_filename_component("world_name" ${world} NAME_WE)
@@ -115,7 +118,15 @@ if (gz-transport_FOUND)
 	endforeach()
 
 	# Setup the environment variables: PX4_GZ_MODELS, PX4_GZ_WORLDS, GZ_SIM_RESOURCE_PATH
-	configure_file(gz_env.sh.in ${PX4_BINARY_DIR}/rootfs/gz_env.sh)
+        configure_file(gz_env.sh.in ${PX4_BINARY_DIR}/rootfs/gz_env.sh)
+
+        # Provide alias targets for the quadruped world
+        if(TARGET gz_quadruped_quadruped)
+                add_custom_target(gz_quadruped DEPENDS gz_quadruped_quadruped)
+        endif()
+        if(TARGET gz_quadruped_gait_quadruped)
+                add_custom_target(gz_quadruped_gait DEPENDS gz_quadruped_gait_quadruped)
+        endif()
 
 else()
 	# Create fallback targets that provide helpful error messages when Gazebo dependencies are missing
@@ -143,8 +154,17 @@ else()
                                         VERBATIM
                                 )
 			endif()
-		endforeach()
-	endforeach()
+                endforeach()
+        endforeach()
 
-	message(STATUS "Gazebo simulation bridge module disabled: missing dependencies")
+        # Provide alias targets for the quadruped world when dependencies are
+        # missing so that 'gz_quadruped' and 'gz_quadruped_gait' always exist
+        if(TARGET gz_quadruped_quadruped)
+                add_custom_target(gz_quadruped DEPENDS gz_quadruped_quadruped)
+        endif()
+        if(TARGET gz_quadruped_gait_quadruped)
+                add_custom_target(gz_quadruped_gait DEPENDS gz_quadruped_gait_quadruped)
+        endif()
+
+        message(STATUS "Gazebo simulation bridge module disabled: missing dependencies")
 endif()
