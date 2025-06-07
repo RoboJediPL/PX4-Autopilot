@@ -80,6 +80,12 @@ To test the quadruped in simulation run:
 PX4_GZ_WORLD=quadruped make px4_sitl gz_quadruped
 ```
 
+To watch the quadruped walk using the internal gait controller run:
+
+```bash
+PX4_GZ_WORLD=quadruped make px4_sitl gz_quadruped_gait
+```
+
 If you see `unknown target 'gz_quadruped'` or a message that the Gazebo
 simulation dependencies are missing, reinitialize the submodule and ensure the
 `gz-harmonic` packages are installed:
