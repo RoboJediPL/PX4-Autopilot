@@ -199,3 +199,28 @@ make px4_sitl gz_rover_ackermann
 ```
 
 ![Ackermann Rover in Gazebo](../../assets/simulation/gazebo/vehicles/rover_ackermann.png)
+
+### Quadruped Rover
+
+The quadruped robot can be driven like a rover or walked using the experimental
+`quadruped_control` module.
+
+```sh
+make px4_sitl gz_quadruped
+```
+
+If CMake reports that Gazebo dependencies are missing, initialize the models submodule
+and install `gz-harmonic`:
+
+```bash
+git submodule update --init --recursive
+brew install gz-harmonic  # macOS
+./Tools/setup/macos.sh --sim-tools
+sudo apt-get update && sudo apt-get install gz-harmonic libunwind-dev libgz-msgs10-dev libgz-transport13-dev libgz-math7-dev libgz-utils2-dev  # Ubuntu
+```
+
+Run the gait demo to see the quadruped walking:
+
+```sh
+make px4_sitl gz_quadruped_gait
+```
