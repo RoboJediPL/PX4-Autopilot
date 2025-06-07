@@ -6,6 +6,13 @@ This directory contains resources for simulating a simple quadruped robot using 
 PX4_GZ_WORLD=quadruped make px4_sitl gz_quadruped
 ```
 
+To run the built-in gait generator start the gait target which enables leg mode
+and publishes a simple trot pattern:
+
+```
+PX4_GZ_WORLD=quadruped make px4_sitl gz_quadruped_gait
+```
+
 Ensure that the Gazebo models submodule is initialized and that the `gz-harmonic` package is installed.
 If the submodule becomes detached after running `make distclean`, reinitialize it recursively:
 
