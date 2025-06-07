@@ -104,3 +104,13 @@ brew install gz-harmonic  # macOS
 This launches Gazebo with the `quadruped` world and model, including the
 `WheelEncoderSystem` plugin that publishes wheel encoder data for the rover
 controllers.
+
+To watch the quadruped walk using the internal gait generator, run the gait
+demo target instead:
+
+```bash
+PX4_GZ_WORLD=quadruped make px4_sitl gz_quadruped_gait
+```
+
+The gait demo loads an airframe configuration that sets `QD_MODE` to `1` and
+uses the default gait frequency and amplitude.

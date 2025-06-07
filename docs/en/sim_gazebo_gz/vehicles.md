@@ -199,3 +199,18 @@ make px4_sitl gz_rover_ackermann
 ```
 
 ![Ackermann Rover in Gazebo](../../assets/simulation/gazebo/vehicles/rover_ackermann.png)
+
+### Quadruped Rover
+
+The quadruped robot can be driven like a rover or walked using the experimental
+`quadruped_control` module.
+
+```sh
+make px4_sitl gz_quadruped
+```
+
+Run the gait demo to see the quadruped walking:
+
+```sh
+make px4_sitl gz_quadruped_gait
+```
