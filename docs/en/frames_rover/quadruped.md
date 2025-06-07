@@ -101,6 +101,10 @@ brew install gz-harmonic  # macOS
 # or run Tools/setup/ubuntu.sh on Linux
 ```
 
+If you instead see an error that `px4_gz_plugins` is missing, the Gazebo models
+submodule was not initialized correctly. Run the same commands above to clone it
+again.
+
 This launches Gazebo with the `quadruped` world and model, including the
 `WheelEncoderSystem` plugin that publishes wheel encoder data for the rover
 controllers.

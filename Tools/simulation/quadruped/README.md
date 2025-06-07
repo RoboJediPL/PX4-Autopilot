@@ -22,6 +22,9 @@ git submodule update --init --recursive
 export GZ_DISTRO=harmonic
 ```
 
+If the build fails with `px4_gz_plugins` missing, run the above commands to
+ensure the models and plugins are downloaded.
+
 The `model` and `world` files included here provide a minimal environment with a ground plane, sun light source, and the quadruped model using the `WheelEncoderSystem` plugin.
 
 See [docs/en/frames_rover/quadruped.md](../../../docs/en/frames_rover/quadruped.md) for full details about the quadruped control module and hardware integration.
