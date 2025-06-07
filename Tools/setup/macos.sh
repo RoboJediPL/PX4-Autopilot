@@ -55,17 +55,17 @@ python3 -m pip install --user -r ${DIR}/requirements.txt
 
 # Optional, but recommended additional simulation tools:
 if [[ $INSTALL_SIM == "--sim-tools" ]]; then
-        if brew ls --versions px4-sim > /dev/null; then
-                brew install px4-sim
-        elif [[ $REINSTALL_FORMULAS == "--reinstall" ]]; then
-                brew reinstall px4-sim
-        fi
+       if ! brew ls --versions px4-sim > /dev/null; then
+               brew install px4-sim
+       elif [[ $REINSTALL_FORMULAS == "--reinstall" ]]; then
+               brew reinstall px4-sim
+       fi
 
-        if brew ls --versions gz-harmonic > /dev/null; then
-                brew install gz-harmonic
-        elif [[ $REINSTALL_FORMULAS == "--reinstall" ]]; then
-                brew reinstall gz-harmonic
-        fi
+       if ! brew ls --versions gz-harmonic > /dev/null; then
+               brew install gz-harmonic
+       elif [[ $REINSTALL_FORMULAS == "--reinstall" ]]; then
+               brew reinstall gz-harmonic
+       fi
 fi
 
 echo "All set! PX4 toolchain installed!"
