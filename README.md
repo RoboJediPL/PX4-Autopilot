@@ -79,6 +79,12 @@ To test the quadruped in simulation run:
 ```bash
 PX4_GZ_WORLD=quadruped make px4_sitl gz_quadruped
 ```
+You can also launch the simulator using the helper script, which initializes
+the models submodule and configures `GZ_DISTRO` automatically:
+
+```bash
+Tools/simulation/quadruped/run_quadruped_sim.sh
+```
 
 To watch the quadruped walk using the internal gait controller run:
 
