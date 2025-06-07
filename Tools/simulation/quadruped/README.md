@@ -18,6 +18,7 @@ On macOS install the package with Homebrew:
 
 ```bash
 brew install gz-harmonic
+./Tools/setup/macos.sh --sim-tools  # optional helper
 ```
 
 On Ubuntu install the dependencies with:
