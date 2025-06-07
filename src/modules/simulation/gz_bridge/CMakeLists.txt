@@ -92,9 +92,9 @@ if (gz-transport_FOUND)
 	# Below we setup the build targets for our worlds and models
 	# Syntax: gz_<model_name>_<world_name>
 	# Example: gz_x500_flow_forest
-	foreach(gz_airframe IN LISTS gz_airframes)
-		set(model_name)
-		string(REGEX REPLACE ".*_gz_" "" model_name ${gz_airframe})
+        foreach(gz_airframe IN LISTS gz_airframes)
+                set(model_name)
+                string(REGEX REPLACE ".*_gz_" "" model_name ${gz_airframe})
 
 		foreach(world ${gz_worlds})
 			get_filename_component("world_name" ${world} NAME_WE)
@@ -154,8 +154,17 @@ else()
                                         VERBATIM
                                 )
 			endif()
-		endforeach()
-	endforeach()
+                endforeach()
+        endforeach()
 
-	message(STATUS "Gazebo simulation bridge module disabled: missing dependencies")
+        # Provide alias targets for the quadruped world when dependencies are
+        # missing so that 'gz_quadruped' and 'gz_quadruped_gait' always exist
+        if(TARGET gz_quadruped_quadruped)
+                add_custom_target(gz_quadruped DEPENDS gz_quadruped_quadruped)
+        endif()
+        if(TARGET gz_quadruped_gait_quadruped)
+                add_custom_target(gz_quadruped_gait DEPENDS gz_quadruped_gait_quadruped)
+        endif()
+
+        message(STATUS "Gazebo simulation bridge module disabled: missing dependencies")
 endif()
