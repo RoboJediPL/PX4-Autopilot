@@ -68,10 +68,11 @@ the quadruped control module. Make sure the `Tools/simulation/gz` submodule is
 initialized and that Gazebo Harmonic is installed (the `Tools/setup/ubuntu.sh`
 script will install the required `gz-harmonic` package):
 
-On macOS the package can be installed using Homebrew:
+On macOS the package can be installed using Homebrew or via the setup script:
 
 ```bash
 brew install gz-harmonic
+./Tools/setup/macos.sh --sim-tools
 ```
 
 ```bash
@@ -98,9 +99,28 @@ missing, update the submodule and (re)install the `gz-harmonic` packages:
 ```bash
 git submodule update --init --recursive
 brew install gz-harmonic  # macOS
+# Ubuntu
+sudo apt-get update && sudo apt-get install \
+  gz-harmonic libunwind-dev \
+  libgz-msgs10-dev libgz-transport13-dev \
+  libgz-math7-dev libgz-utils2-dev
 # or run Tools/setup/ubuntu.sh on Linux
 ```
+
+If you instead see an error that `px4_gz_plugins` is missing, the Gazebo models
+submodule was not initialized correctly. Run the same commands above to clone it
+again.
 
 This launches Gazebo with the `quadruped` world and model, including the
 `WheelEncoderSystem` plugin that publishes wheel encoder data for the rover
 controllers.
+
+To watch the quadruped walk using the internal gait generator, run the gait
+demo target instead:
+
+```bash
+PX4_GZ_WORLD=quadruped make px4_sitl gz_quadruped_gait
+```
+
+The gait demo loads an airframe configuration that sets `QD_MODE` to `1` and
+uses the default gait frequency and amplitude.

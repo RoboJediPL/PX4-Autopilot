@@ -49,6 +49,13 @@ To install the toolchain:
 
    - Acknowledge any prompts as the script progress.
    - You can use the `--no-nuttx` and `--no-sim-tools` options to omit the NuttX and/or simulation tools.
+   - If the build later fails with `ModuleNotFoundError: No module named 'kconfiglib'`, reinstall the Python
+     dependencies:
+
+     ```sh
+     python3 -m pip install --user kconfiglib
+     bash Tools/setup/ubuntu.sh --no-nuttx --no-sim-tools
+     ```
 
 3. If you need Gazebo Classic (Ubuntu 22.04 only) then you can manually remove Gazebo and install it by following the instructions in [Gazebo Classic > Installation](../sim_gazebo_classic/index.md#installation).
 
