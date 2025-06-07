@@ -92,6 +92,15 @@ Run the simulation with:
 PX4_GZ_WORLD=quadruped make px4_sitl gz_quadruped
 ```
 
+If CMake reports `unknown target 'gz_quadruped'` or that Gazebo dependencies are
+missing, update the submodule and (re)install the `gz-harmonic` packages:
+
+```bash
+git submodule update --init --recursive
+brew install gz-harmonic  # macOS
+# or run Tools/setup/ubuntu.sh on Linux
+```
+
 This launches Gazebo with the `quadruped` world and model, including the
 `WheelEncoderSystem` plugin that publishes wheel encoder data for the rover
 controllers.
