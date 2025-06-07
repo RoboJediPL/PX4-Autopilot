@@ -216,7 +216,7 @@ and install `gz-harmonic`:
 git submodule update --init --recursive
 brew install gz-harmonic  # macOS
 ./Tools/setup/macos.sh --sim-tools
-sudo apt-get update && sudo apt-get install gz-harmonic libunwind-dev  # Ubuntu
+sudo apt-get update && sudo apt-get install gz-harmonic libunwind-dev libgz-msgs10-dev libgz-transport13-dev libgz-math7-dev libgz-utils2-dev  # Ubuntu
 ```
 
 Run the gait demo to see the quadruped walking:

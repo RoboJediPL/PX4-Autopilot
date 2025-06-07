@@ -89,7 +89,7 @@ git submodule update --init --recursive
 brew install gz-harmonic  # macOS
 # or run Tools/setup/macos.sh --sim-tools
 # Ubuntu
-sudo apt-get update && sudo apt-get install gz-harmonic libunwind-dev
+sudo apt-get update && sudo apt-get install gz-harmonic libunwind-dev libgz-msgs10-dev libgz-transport13-dev libgz-math7-dev libgz-utils2-dev
 # or run Tools/setup/ubuntu.sh on Linux
 ```
 
