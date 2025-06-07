@@ -80,6 +80,16 @@ To test the quadruped in simulation run:
 PX4_GZ_WORLD=quadruped make px4_sitl gz_quadruped
 ```
 
+If you see `unknown target 'gz_quadruped'` or a message that the Gazebo
+simulation dependencies are missing, reinitialize the submodule and ensure the
+`gz-harmonic` packages are installed:
+
+```bash
+git submodule update --init --recursive
+brew install gz-harmonic  # macOS
+# or run Tools/setup/ubuntu.sh on Linux
+```
+
 This launches Gazebo with the quadruped model and the wheel encoder plugin.
 
 
