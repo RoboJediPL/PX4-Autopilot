@@ -208,7 +208,7 @@ if [[ $INSTALL_SIM == "true" ]]; then
 		sudo apt-get update -y --quiet
 
 		# Install Gazebo
-		gazebo_packages="gz-harmonic libunwind-dev"
+                gazebo_packages="gz-harmonic libunwind-dev libgz-msgs10-dev libgz-transport13-dev libgz-math7-dev libgz-utils2-dev"
 
 		if [[ "${UBUNTU_RELEASE}" == "24.04" ]]; then
 			gazebo_packages="$gazebo_packages cppzmq-dev"
