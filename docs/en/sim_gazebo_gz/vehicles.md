@@ -209,6 +209,15 @@ The quadruped robot can be driven like a rover or walked using the experimental
 make px4_sitl gz_quadruped
 ```
 
+If CMake reports that Gazebo dependencies are missing, initialize the models submodule
+and install `gz-harmonic`:
+
+```bash
+git submodule update --init --recursive
+brew install gz-harmonic  # macOS
+sudo apt-get update && sudo apt-get install gz-harmonic libunwind-dev  # Ubuntu
+```
+
 Run the gait demo to see the quadruped walking:
 
 ```sh

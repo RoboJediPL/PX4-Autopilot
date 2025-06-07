@@ -14,6 +14,11 @@ PX4_GZ_WORLD=quadruped make px4_sitl gz_quadruped_gait
 ```
 
 Ensure that the Gazebo models submodule is initialized and that the `gz-harmonic` package is installed.
+On Ubuntu install the dependencies with:
+
+```bash
+sudo apt-get update && sudo apt-get install gz-harmonic libunwind-dev
+```
 If the submodule becomes detached after running `make distclean`, reinitialize it recursively:
 
 ```
@@ -21,6 +26,9 @@ git submodule update --init Tools/simulation/gz
 git submodule update --init --recursive
 export GZ_DISTRO=harmonic
 ```
+
+If the build fails with `px4_gz_plugins` missing, run the above commands to
+ensure the models and plugins are downloaded.
 
 The `model` and `world` files included here provide a minimal environment with a ground plane, sun light source, and the quadruped model using the `WheelEncoderSystem` plugin.
 
