@@ -36,7 +36,7 @@ using namespace time_literals;
 
 QuadrupedGait::QuadrupedGait() :
 	ModuleParams(nullptr),
-	ScheduledWorkItem(MODULE_NAME, px4::wq_configurations::att_ctrl)
+       ScheduledWorkItem(MODULE_NAME, px4::wq_configurations::rate_ctrl)
 {
 }
 
