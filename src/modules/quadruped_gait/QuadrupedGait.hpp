@@ -39,7 +39,9 @@
 #include <px4_platform_common/px4_work_queue/ScheduledWorkItem.hpp>
 
 #include <uORB/Publication.hpp>
+#include <uORB/Subscription.hpp>
 #include <uORB/topics/actuator_motors.h>
+#include <uORB/topics/quadruped_gait_command.h>
 
 class QuadrupedGait : public ModuleBase<QuadrupedGait>, public ModuleParams,
 	public px4::ScheduledWorkItem
@@ -57,6 +59,15 @@ public:
 private:
 	void Run() override;
 
+	uORB::Subscription _gait_cmd_sub{ORB_ID(quadruped_gait_command)};
+	uORB::SubscriptionInterval _parameter_update_sub{ORB_ID(parameter_update), 1_s};
+
 	float _phase{0.f};
+	float _freq{1.f};
+	float _amplitude{0.5f};
 	uORB::Publication<actuator_motors_s> _actuator_motors_pub{ORB_ID(actuator_motors)};
+
+	DEFINE_PARAMETERS(
+		(ParamFloat<px4::params::QG_FREQ>) _param_qg_freq
+	)
 };
