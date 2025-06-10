@@ -1,0 +1,5 @@
+menuconfig MODULES_QUADRUPED_GAIT
+    bool "quadruped_gait"
+    default n
+    ---help---
+        Enable quadruped gait controller
