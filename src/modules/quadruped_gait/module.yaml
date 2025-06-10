@@ -1,0 +1,10 @@
+module_name: Quadruped Gait
+parameters:
+  - group: Quadruped Gait
+    definitions:
+      QG_FREQ:
+        description:
+          short: Gait cycle frequency
+        type: float
+        unit: Hz
+        default: 1.0

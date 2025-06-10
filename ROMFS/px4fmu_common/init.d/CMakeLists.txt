@@ -100,10 +100,17 @@ if(CONFIG_MODULES_SPACECRAFT)
 endif()
 
 if(CONFIG_MODULES_ROVER_MECANUM)
-	px4_add_romfs_files(
-		rc.rover_mecanum_apps
-		rc.rover_mecanum_defaults
-	)
+        px4_add_romfs_files(
+                rc.rover_mecanum_apps
+                rc.rover_mecanum_defaults
+        )
+endif()
+
+if(CONFIG_MODULES_QUADRUPED_GAIT)
+        px4_add_romfs_files(
+                rc.quadruped_apps
+                rc.quadruped_defaults
+        )
 endif()
 
 if(CONFIG_MODULES_UUV_ATT_CONTROL)
