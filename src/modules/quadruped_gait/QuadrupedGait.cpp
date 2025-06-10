@@ -43,6 +43,8 @@ QuadrupedGait::QuadrupedGait() :
 bool QuadrupedGait::init()
 {
 	ScheduleOnInterval(20_ms); // 50 Hz
+	updateParams();
+	_freq = _param_qg_freq.get();
 	return true;
 }
 
@@ -59,15 +61,33 @@ void QuadrupedGait::Run()
 	motors.timestamp_sample = motors.timestamp;
 	motors.reversible_flags = 0;
 
-	const float freq = 1.f; // Hz
+	parameter_update_s param_upd{};
+
+	if (_parameter_update_sub.update(&param_upd)) {
+		updateParams();
+		_freq = _param_qg_freq.get();
+	}
+
+	quadruped_gait_command_s cmd{};
+
+	if (_gait_cmd_sub.update(&cmd)) {
+		if (PX4_ISFINITE(cmd.frequency)) {
+			_freq = cmd.frequency;
+		}
+
+		if (PX4_ISFINITE(cmd.amplitude)) {
+			_amplitude = cmd.amplitude;
+		}
+	}
+
 	const float dt = 0.02f; // 20 ms
-	_phase += dt * freq * 2.f * M_PI;
+	_phase += dt * _freq * 2.f * M_PI;
 
 	if (_phase > 2.f * M_PI) {
 		_phase -= 2.f * M_PI;
 	}
 
-	const float a = 0.5f;
+	const float a = _amplitude;
 
 	motors.control[0] = a * sinf(_phase);
 	motors.control[1] = a * cosf(_phase);
