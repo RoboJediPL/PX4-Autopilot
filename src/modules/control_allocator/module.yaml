@@ -1223,6 +1223,10 @@ mixer:
                   - actuator_type: 'servo'
                     instances:
                       - name: 'Front Left Rotate'
+                        position: [ 1, 1, 0 ]
                       - name: 'Front Right Rotate'
+                        position: [ 1, -1, 0 ]
                       - name: 'Rear Left Rotate'
+                        position: [ -1, 1, 0 ]
                       - name: 'Rear Right Rotate'
+                        position: [ -1, -1, 0 ]

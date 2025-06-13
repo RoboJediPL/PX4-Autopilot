@@ -2,4 +2,5 @@
 # Apps for quadruped rover
 
 quadruped start
+quadruped_gait start
 land_detector start rover
