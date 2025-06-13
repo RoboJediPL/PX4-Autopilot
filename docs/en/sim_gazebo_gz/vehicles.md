@@ -199,3 +199,12 @@ make px4_sitl gz_rover_ackermann
 ```
 
 ![Ackermann Rover in Gazebo](../../assets/simulation/gazebo/vehicles/rover_ackermann.png)
+
+### Quadruped Rover
+
+[Quadruped Rover](../frames_rover/quadruped.md) uses the [rover world](../sim_gazebo_gz/worlds.md#rover) by default.
+
+```sh
+make px4_sitl gz_quadruped
+```
+
