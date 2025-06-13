@@ -1,0 +1,5 @@
+#!/bin/sh
+# Apps for quadruped rover
+
+quadruped start
+land_detector start rover
