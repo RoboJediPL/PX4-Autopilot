@@ -1,6 +1,11 @@
-config MODULES_QUADRUPED_GAIT
-    bool "Quadruped Gait"
-    default n
-    depends on PX4_SCHED_WORK_QUEUE
-    help
-        Control module for quadruped legged locomotion.
+menuconfig MODULES_QUADRUPED_GAIT
+	bool "quadruped_gait"
+	default n
+	---help---
+		Enable quadruped gait controller
+
+config MODULES_QUADRUPED_GAIT_RC
+	bool "quadruped_gait_rc"
+	default n
+	---help---
+		Publish gait commands from RC inputs

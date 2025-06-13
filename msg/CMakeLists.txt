@@ -169,7 +169,7 @@ set(msg_files
 	Px4ioStatus.msg
         QshellReq.msg
         QshellRetval.msg
-        QuadrupedLegCommand.msg
+	QuadrupedGaitCommand.msg
         RadioStatus.msg
 	RateCtrlStatus.msg
 	RcChannels.msg

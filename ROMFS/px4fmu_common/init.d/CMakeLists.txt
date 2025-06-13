@@ -106,7 +106,7 @@ if(CONFIG_MODULES_ROVER_MECANUM)
         )
 endif()
 
-if(CONFIG_MODULES_QUADRUPED)
+if(CONFIG_MODULES_QUADRUPED_GAIT)
         px4_add_romfs_files(
                 rc.quadruped_apps
                 rc.quadruped_defaults

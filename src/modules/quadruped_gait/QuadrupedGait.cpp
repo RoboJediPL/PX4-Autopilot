@@ -4,66 +4,164 @@ QuadrupedGait::QuadrupedGait()
     : ModuleParams(nullptr), ScheduledWorkItem(MODULE_NAME, px4::wq_configurations::nav_and_controllers)
 {
     _start_time = hrt_absolute_time();
+/****************************************************************************
+ *
+ *   Copyright (c) 2025 PX4 Development Team. All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in
+ *    the documentation and/or other materials provided with the
+ *    distribution.
+ * 3. Neither the name PX4 nor the names of its contributors may be
+ *    used to endorse or promote products derived from this software
+ *    without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+ * FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+ * COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+ * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
+ * OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED
+ * AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+ * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ *
+ ****************************************************************************/
+#include "QuadrupedGait.hpp"
+
+using namespace time_literals;
+
+QuadrupedGait::QuadrupedGait() :
+	ModuleParams(nullptr),
+       ScheduledWorkItem(MODULE_NAME, px4::wq_configurations::rate_ctrl)
+{
 }
 
 bool QuadrupedGait::init()
 {
     ScheduleOnInterval(100_ms); // 10 Hz
     return true;
+	ScheduleOnInterval(20_ms); // 50 Hz
+	updateParams();
+	_freq = _param_qg_freq.get();
+	return true;
 }
 
 void QuadrupedGait::Run()
 {
-    if (should_exit()) {
-        ScheduleClear();
-        exit_and_cleanup();
-        return;
-    }
+	if (should_exit()) {
+		ScheduleClear();
+		exit_and_cleanup();
+		return;
+	}
 
-    if (_parameter_update_sub.updated()) {
-        parameter_update_s p{};
-        _parameter_update_sub.copy(&p);
-        updateParams();
-    }
+	actuator_motors_s motors{};
+	motors.timestamp = hrt_absolute_time();
+	motors.timestamp_sample = motors.timestamp;
+	motors.reversible_flags = 0;
 
-    const float period_s = math::max(0.001f, static_cast<float>(_param_qdp_period_ms.get()) / 1000.f);
+	parameter_update_s param_upd{};
 
-    rover_throttle_setpoint_s thr{};
-    if (_throttle_sub.update(&thr)) {
-        _throttle_body_x = thr.throttle_body_x;
-    }
+	if (_parameter_update_sub.update(&param_upd)) {
+		updateParams();
+		_freq = _param_qg_freq.get();
+	}
 
-    rover_velocity_setpoint_s vel{};
-    if (_velocity_sub.update(&vel)) {
-        _throttle_body_x = math::constrain(vel.speed / _param_qdp_max_speed.get(), -1.f, 1.f);
-    }
+	quadruped_gait_command_s cmd{};
 
-    rover_steering_setpoint_s steer{};
-    if (_steering_sub.update(&steer)) {
-        _steering_diff = steer.normalized_speed_diff;
-    }
+	if (_gait_cmd_sub.update(&cmd)) {
+		if (PX4_ISFINITE(cmd.frequency)) {
+			_freq = cmd.frequency;
+		}
 
-    const float speed_amp = math::constrain(_param_qdp_step_amp.get() * _throttle_body_x, -1.f, 1.f);
-    const float rot_amp = math::constrain(_param_qdp_rotate_amp.get() * _steering_diff, -1.f, 1.f);
+		if (PX4_ISFINITE(cmd.amplitude)) {
+			_amplitude = cmd.amplitude;
+		}
+	}
 
-    const float phase = fmodf((hrt_absolute_time() - _start_time) / 1e6f, period_s) / period_s;
+	const float dt = 0.02f; // 20 ms
+	_phase += dt * _freq * 2.f * M_PI;
 
-    quadruped_leg_command_s cmd{};
-    cmd.timestamp = hrt_absolute_time();
+	if (_phase > 2.f * M_PI) {
+		_phase -= 2.f * M_PI;
+	}
 
-    for (int i = 0; i < 4; ++i) {
-        float leg_phase = phase + ((i == 1 || i == 2) ? 0.5f : 0.f);
+	const float a = _amplitude;
 
-        if (leg_phase >= 1.f) { leg_phase -= 1.f; }
+	motors.control[0] = a * sinf(_phase);
+	motors.control[1] = a * cosf(_phase);
+	motors.control[2] = a * sinf(_phase + M_PI);
+	motors.control[3] = a * cosf(_phase + M_PI);
+	motors.control[4] = a * sinf(_phase + M_PI_2);
+	motors.control[5] = a * cosf(_phase + M_PI_2);
+	motors.control[6] = a * sinf(_phase + 3.f * M_PI_2);
+	motors.control[7] = a * cosf(_phase + 3.f * M_PI_2);
 
-        cmd.wheel_setpoints[i] = (leg_phase < 0.5f) ? speed_amp : -speed_amp;
-        cmd.rotate_setpoints[i] = rot_amp * sinf(leg_phase * M_PI_F * 2.f);
-    }
+	for (int i = 8; i < actuator_motors_s::NUM_CONTROLS; i++) {
+		motors.control[i] = NAN;
+	}
 
-    _cmd_pub.publish(cmd);
+	_actuator_motors_pub.publish(motors);
 }
 
-int QuadrupedGait_main(int argc, char *argv[])
+int QuadrupedGait::task_spawn(int argc, char *argv[])
+{
+	QuadrupedGait *instance = new QuadrupedGait();
+
+	if (instance) {
+		_object.store(instance);
+		_task_id = task_id_is_work_queue;
+
+		if (instance->init()) {
+			return PX4_OK;
+		}
+
+	} else {
+		PX4_ERR("alloc failed");
+	}
+
+	delete instance;
+	_object.store(nullptr);
+	_task_id = -1;
+
+	return PX4_ERROR;
+}
+
+int QuadrupedGait::custom_command(int argc, char *argv[])
+{
+	return print_usage("unknown command");
+}
+
+int QuadrupedGait::print_usage(const char *reason)
+{
+	if (reason) {
+		PX4_WARN("%s\n", reason);
+	}
+
+	PRINT_MODULE_DESCRIPTION(
+		R"DESCR_STR(
+### Description
+Quadruped gait generation example.
+Controls Rotate and Pulley motors of a four legged robot.
+)DESCR_STR");
+
+    PRINT_MODULE_USAGE_NAME("quadruped_gait", "controller");
+    PRINT_MODULE_USAGE_COMMAND("start");
+    PRINT_MODULE_USAGE_DEFAULT_COMMANDS();
+
+    return 0;
+}
+
+extern "C" __EXPORT int quadruped_gait_main(int argc, char *argv[])
 {
     return QuadrupedGait::main(argc, argv);
 }
