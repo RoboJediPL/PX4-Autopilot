@@ -55,8 +55,17 @@ fi
 #
 if [ $VEHICLE_TYPE = rover_mecanum ]
 then
-	# Start mecanum drive rover apps.
-	. ${R}etc/init.d/rc.rover_mecanum_apps
+        # Start mecanum drive rover apps.
+        . ${R}etc/init.d/rc.rover_mecanum_apps
+fi
+
+#
+# Quadruped Rover setup.
+#
+if [ $VEHICLE_TYPE = quadruped ]
+then
+        # Start quadruped rover apps.
+        . ${R}etc/init.d/rc.quadruped_apps
 fi
 
 #

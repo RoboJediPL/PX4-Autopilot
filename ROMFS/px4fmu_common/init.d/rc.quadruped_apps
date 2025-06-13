@@ -1,0 +1,5 @@
+#!/bin/sh
+# Standard apps for a quadruped rover.
+quadruped_gait start
+quadruped_gait_rc start
+land_detector start rover

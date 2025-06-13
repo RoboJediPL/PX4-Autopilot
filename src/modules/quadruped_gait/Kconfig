@@ -1,0 +1,11 @@
+menuconfig MODULES_QUADRUPED_GAIT
+	bool "quadruped_gait"
+	default n
+	---help---
+		Enable quadruped gait controller
+
+config MODULES_QUADRUPED_GAIT_RC
+	bool "quadruped_gait_rc"
+	default n
+	---help---
+		Publish gait commands from RC inputs
