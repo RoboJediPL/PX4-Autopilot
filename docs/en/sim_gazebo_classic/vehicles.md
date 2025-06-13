@@ -118,6 +118,14 @@ make px4_sitl gazebo-classic_r1_rover
 
 ![Rover in Gazebo Classic](../../assets/simulation/gazebo_classic/vehicles/r1_rover.png)
 
+### Quadruped Rover
+
+```sh
+make px4_sitl gazebo-classic_quadruped_rover
+```
+
+The quadruped rover model is a simple extension of the differential rover using the same controller.
+
 ## Unmanned Underwater Vehicle (UUV/Submarine)
 
 ### HippoCampus TUHH UUV

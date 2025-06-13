@@ -82,6 +82,7 @@ For the full list of build targets run `make px4_sitl list_vmd_make_targets` (an
 | [Tailsitter VTOL](../sim_gazebo_classic/vehicles.md#tailsitter-vtol)                                                               | `make px4_sitl gazebo-classic_tailsitter`                 |
 | [Ackerman UGV (Rover)](../sim_gazebo_classic/vehicles.md#ackermann-ugv)                                                            | `make px4_sitl gazebo-classic_rover`                      |
 | [Differential UGV (Rover)](../sim_gazebo_classic/vehicles.md#differential-ugv)                                                     | `make px4_sitl gazebo-classic_r1_rover`                   |
+| [Quadruped Rover](../sim_gazebo_classic/vehicles.md#quadruped-rover)                                                     | `make px4_sitl gazebo-classic_quadruped_rover` |
 | [HippoCampus TUHH (UUV: Unmanned Underwater Vehicle)](../sim_gazebo_classic/vehicles.md#unmanned-underwater-vehicle-uuv-submarine) | `make px4_sitl gazebo-classic_uuv_hippocampus`            |
 | [Boat (USV: Unmanned Surface Vehicle)](../sim_gazebo_classic/vehicles.md#hippocampus-tuhh-uuv)                                     | `make px4_sitl gazebo-classic_boat`                       |
 | [Cloudship (Airship)](../sim_gazebo_classic/vehicles.md#airship)                                                                   | `make px4_sitl gazebo-classic_cloudship`                  |
