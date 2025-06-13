@@ -1,3 +1,17 @@
 #!/bin/sh
 # Quadruped rover parameters.
-set VEHICLE_TYPE quadruped
+
+set VEHICLE_TYPE rover_quadruped
+param set-default MAV_TYPE 10           # MAV_TYPE_GROUND_ROVER
+param set-default CA_AIRFRAME 16        # Rover (Quadruped)
+param set-default CA_R_REV 15           # All motors reversible
+param set-default EKF2_MAG_TYPE 1       # Ensure magnetometer is fused
+param set-default NAV_ACC_RAD 0.5       # Waypoint acceptance radius
+param set-default EKF2_GBIAS_INIT 0.01
+param set-default EKF2_ANGERR_INIT 0.01
+
+# Quadruped gait parameters
+param set-default QDP_PERIOD_MS 2000
+param set-default QDP_STEP_AMP 0.5
+param set-default QDP_ROTATE_AMP 0.2
+param set-default QDP_MAX_SPEED 1.0

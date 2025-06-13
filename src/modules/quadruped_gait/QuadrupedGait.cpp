@@ -1,3 +1,9 @@
+#include "QuadrupedGait.hpp"
+
+QuadrupedGait::QuadrupedGait()
+    : ModuleParams(nullptr), ScheduledWorkItem(MODULE_NAME, px4::wq_configurations::nav_and_controllers)
+{
+    _start_time = hrt_absolute_time();
 /****************************************************************************
  *
  *   Copyright (c) 2025 PX4 Development Team. All rights reserved.
@@ -42,6 +48,8 @@ QuadrupedGait::QuadrupedGait() :
 
 bool QuadrupedGait::init()
 {
+    ScheduleOnInterval(100_ms); // 10 Hz
+    return true;
 	ScheduleOnInterval(20_ms); // 50 Hz
 	updateParams();
 	_freq = _param_qg_freq.get();

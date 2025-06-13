@@ -62,6 +62,7 @@ Note that all gazebo make targets have the prefix `gz_`.
 | [Advanced Plane](../sim_gazebo_gz/vehicles.md#advanced-plane)                                                                 | `make px4_sitl gz_advanced_plane`   | 4008                |
 | [Differential Rover](../sim_gazebo_gz/vehicles.md#differential-rover)                                                         | `make px4_sitl gz_r1_rover`         | 4009                |
 | [Ackermann Rover](../sim_gazebo_gz/vehicles.md#ackermann-rover)                                                               | `make px4_sitl gz_rover_ackermann`  | 4012                |
+| [Quadruped Rover](../sim_gazebo_gz/vehicles.md#quadruped-rover)                                               | `make px4_sitl gz_quadruped`       | 4022                |
 | [Quad Tailsitter VTOL](../sim_gazebo_gz/vehicles.md#quad-tailsitter-vtol)                                                     | `make px4_sitl gz_quadtailsitter`   | 4018                |
 | [Tiltrotor VTOL](../sim_gazebo_gz/vehicles.md#tiltrotor-vtol)                                                                 | `make px4_sitl gz_tiltrotor`        | 4020                |
 

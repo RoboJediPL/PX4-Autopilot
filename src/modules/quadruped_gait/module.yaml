@@ -1,10 +1,10 @@
-module_name: Quadruped Gait
+module_name: quadruped_gait
 parameters:
-  - group: Quadruped Gait
-    definitions:
-      QG_FREQ:
-        description:
-          short: Gait cycle frequency
-        type: float
-        unit: Hz
+    QDP_PERIOD_MS:
+        default: 2000
+    QDP_STEP_AMP:
+        default: 0.5
+    QDP_ROTATE_AMP:
+        default: 0.2
+    QDP_MAX_SPEED:
         default: 1.0

@@ -1,0 +1,14 @@
+#!/bin/sh
+# @name Quadruped Rover
+# @type Rover
+# @class Rover
+
+. ${R}etc/init.d/rc.quadruped_defaults
+
+PX4_SIMULATOR=${PX4_SIMULATOR:=gz}
+PX4_GZ_WORLD=${PX4_GZ_WORLD:=rover}
+PX4_SIM_MODEL=${PX4_SIM_MODEL:=quadruped}
+
+param set-default SIM_GZ_EN 1 # Gazebo bridge
+
+param set-default NAV_ACC_RAD 0.5
