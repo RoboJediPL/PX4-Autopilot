@@ -33,6 +33,7 @@ parameters:
                 13: Rover (Mecanum)
                 14: Spacecraft 2D
                 15: Spacecraft 3D
+                16: Rover (Quadruped)
             default: 0
 
         CA_METHOD:
@@ -1205,3 +1206,23 @@ mixer:
                         position: [ -1, 1, 0 ]
                       - name: 'Left Motor Back'
                         position: [ -1, -1, 0 ]
+
+            16: # Rover (Quadruped)
+                title: 'Rover (Quadruped)'
+                actuators:
+                  - actuator_type: 'motor'
+                    instances:
+                      - name: 'Front Left Wheel'
+                        position: [ 1, 1, 0 ]
+                      - name: 'Front Right Wheel'
+                        position: [ 1, -1, 0 ]
+                      - name: 'Rear Left Wheel'
+                        position: [ -1, 1, 0 ]
+                      - name: 'Rear Right Wheel'
+                        position: [ -1, -1, 0 ]
+                  - actuator_type: 'servo'
+                    instances:
+                      - name: 'Front Left Rotate'
+                      - name: 'Front Right Rotate'
+                      - name: 'Rear Left Rotate'
+                      - name: 'Rear Right Rotate'

@@ -19043,6 +19043,7 @@ Defines which mixer implementation to use. Some are generic, while others are sp
 - `13`: Rover (Mecanum)
 - `14`: Spacecraft 2D
 - `15`: Spacecraft 3D
+- `16`: Rover (Quadruped)
 
 
 Reboot | minValue | maxValue | increment | default | unit

@@ -60,7 +60,7 @@ then
 fi
 
 # Quadruped Rover setup.
-if [ $VEHICLE_TYPE = quadruped ]
+if [ $VEHICLE_TYPE = rover_quadruped ]
 then
         # Start quadruped rover apps.
         . ${R}etc/init.d/rc.quadruped_apps

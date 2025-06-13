@@ -3,7 +3,7 @@
 
 set VEHICLE_TYPE rover_quadruped
 param set-default MAV_TYPE 10           # MAV_TYPE_GROUND_ROVER
-param set-default CA_AIRFRAME 5         # Rover (Quadruped)
+param set-default CA_AIRFRAME 16        # Rover (Quadruped)
 param set-default CA_R_REV 15           # All motors reversible
 param set-default EKF2_MAG_TYPE 1       # Ensure magnetometer is fused
 param set-default NAV_ACC_RAD 0.5       # Waypoint acceptance radius
