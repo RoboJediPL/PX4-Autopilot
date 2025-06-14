@@ -15,3 +15,4 @@ param set-default QDP_PERIOD_MS 2000
 param set-default QDP_STEP_AMP 0.5
 param set-default QDP_ROTATE_AMP 0.2
 param set-default QDP_MAX_SPEED 1.0
+param set-default QG_FREQ 1.0

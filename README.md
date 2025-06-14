@@ -29,7 +29,15 @@ Release notes and supporting information for PX4 releases can be found on the [D
 
 The [PX4 User Guide](https://docs.px4.io/main/en/) explains how to assemble [supported vehicles](https://docs.px4.io/main/en/airframes/airframe_reference.html) and fly drones with PX4. See the [forum and chat](https://docs.px4.io/main/en/#getting-help) if you need help!
 
-To build the codebase or run checks you need the required dependencies. Run `Tools/setup/ubuntu.sh` (or install the Python packages manually, e.g. `pip3 install kconfiglib`) before executing `make check`.
+To build the codebase or run checks you need the required dependencies. Run `Tools/setup/ubuntu.sh` or install them manually (for example, `pip3 install -r Tools/setup/requirements.txt` for Python packages like `kconfiglib` and `empy`, and `apt-get install gcc-arm-none-eabi` for the cross compiler) before executing `make check`.
+
+The `make check` target performs a full PX4 build, including a NuttX board, which can take several minutes. If you only want to verify the simulator build you can run:
+
+```sh
+make px4_sitl_default check
+```
+
+You can also pass `-j$(nproc)` to speed up compilation using all available CPU cores.
 
 
 ## Changing Code and Contributing
