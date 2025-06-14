@@ -73,8 +73,11 @@ public:
 
                        if (leg_phase >= 1.f) { leg_phase -= 1.f; }
 
-                       cmd.wheel_setpoints[i] = (leg_phase < 0.5f) ? speed_amp : -speed_amp;
-                       cmd.rotate_setpoints[i] = rot_amp * sinf(leg_phase * M_PI_F * 2.f);
+                       cmd.wheel_setpoints[i] = (leg_phase < 0.5f) ? speed_amp : -speed_amp; // Spin Motor
+                       cmd.turn_setpoints[i] = rot_amp * sinf(leg_phase * M_PI_F * 2.f);    // Turn Motor
+
+                       cmd.rotate_setpoints[i] = 0.f; // handled by gait module
+                       cmd.pulley_setpoints[i] = 0.f;
                }
 
 		_cmd_pub.publish(cmd);

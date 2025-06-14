@@ -58,10 +58,13 @@ void QuadrupedGait::Run()
         return;
     }
 
-    actuator_motors_s motors{};
-    motors.timestamp = hrt_absolute_time();
-    motors.timestamp_sample = motors.timestamp;
-    motors.reversible_flags = 0;
+    quadruped_leg_command_s leg{};
+    if (_leg_cmd_sub.copy(&leg)) {
+        // preserve existing rover commands
+    } else {
+        memset(&leg, 0, sizeof(leg));
+    }
+    leg.timestamp = hrt_absolute_time();
 
     parameter_update_s param_upd{};
 
@@ -91,20 +94,16 @@ void QuadrupedGait::Run()
 
     const float a = _amplitude;
 
-    motors.control[0] = a * sinf(_phase);
-    motors.control[1] = a * cosf(_phase);
-    motors.control[2] = a * sinf(_phase + M_PI_F);
-    motors.control[3] = a * cosf(_phase + M_PI_F);
-    motors.control[4] = a * sinf(_phase + M_PI_2_F);
-    motors.control[5] = a * cosf(_phase + M_PI_2_F);
-    motors.control[6] = a * sinf(_phase + 3.f * M_PI_2_F);
-    motors.control[7] = a * cosf(_phase + 3.f * M_PI_2_F);
+    leg.rotate_setpoints[0] = a * sinf(_phase);
+    leg.pulley_setpoints[0] = a * cosf(_phase);
+    leg.rotate_setpoints[1] = a * sinf(_phase + M_PI_F);
+    leg.pulley_setpoints[1] = a * cosf(_phase + M_PI_F);
+    leg.rotate_setpoints[2] = a * sinf(_phase + M_PI_2_F);
+    leg.pulley_setpoints[2] = a * cosf(_phase + M_PI_2_F);
+    leg.rotate_setpoints[3] = a * sinf(_phase + 3.f * M_PI_2_F);
+    leg.pulley_setpoints[3] = a * cosf(_phase + 3.f * M_PI_2_F);
 
-    for (int i = 8; i < actuator_motors_s::NUM_CONTROLS; i++) {
-        motors.control[i] = NAN;
-    }
-
-    _actuator_motors_pub.publish(motors);
+    _leg_cmd_pub.publish(leg);
 }
 
 int QuadrupedGait::task_spawn(int argc, char *argv[])
