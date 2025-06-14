@@ -2,7 +2,8 @@
 
 <Badge type="tip" text="PX4 v1.16" /> <Badge type="warning" text="Experimental"/>
 
-A quadruped rover is a legged robot that walks using four individually actuated legs. The PX4 quadruped module converts throttle and steering setpoints into leg wheel and rotation commands published on the `quadruped_leg_command` topic.
+A quadruped rover is a legged robot that walks using four individually actuated legs. Each leg has four motors:
+Turn Motor (TM) and Spin Motor (SM) provide rover-style driving, while Rotate Motor (RM) and Pulley Motor (PM) generate the walking gait. The PX4 quadruped module publishes all motor setpoints on the `quadruped_leg_command` topic.
 
 Simulation of the quadruped rover is supported with Gazebo using the `gz_quadruped` target. See [Simulation > Gazebo](../sim_gazebo_gz/vehicles.md#quadruped-rover) for details.
 
