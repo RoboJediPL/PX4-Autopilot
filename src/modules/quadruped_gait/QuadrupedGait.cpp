@@ -59,11 +59,8 @@ void QuadrupedGait::Run()
     }
 
     quadruped_leg_command_s leg{};
-    if (_leg_cmd_sub.copy(&leg)) {
-        // preserve existing rover commands
-    } else {
-        memset(&leg, 0, sizeof(leg));
-    }
+    // keep the latest wheel and turn motor setpoints
+    _leg_cmd_sub.copy(&leg);
     leg.timestamp = hrt_absolute_time();
 
     parameter_update_s param_upd{};
