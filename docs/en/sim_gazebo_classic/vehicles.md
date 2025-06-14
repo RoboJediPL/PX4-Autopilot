@@ -124,7 +124,8 @@ make px4_sitl gazebo-classic_r1_rover
 make px4_sitl gazebo-classic_quadruped_rover
 ```
 
-The quadruped rover model is a simple extension of the differential rover using the same controller.
+The quadruped rover model extends the differential rover by driving four motors on each leg.
+TM/SM implement the rover steering and throttle, while RM/PM generate the gait motion.
 
 ## Unmanned Underwater Vehicle (UUV/Submarine)
 
