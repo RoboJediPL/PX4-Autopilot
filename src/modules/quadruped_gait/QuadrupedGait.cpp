@@ -1,9 +1,3 @@
-#include "QuadrupedGait.hpp"
-
-QuadrupedGait::QuadrupedGait()
-    : ModuleParams(nullptr), ScheduledWorkItem(MODULE_NAME, px4::wq_configurations::nav_and_controllers)
-{
-    _start_time = hrt_absolute_time();
 /****************************************************************************
  *
  *   Copyright (c) 2025 PX4 Development Team. All rights reserved.
@@ -36,119 +30,119 @@ QuadrupedGait::QuadrupedGait()
  * POSSIBILITY OF SUCH DAMAGE.
  *
  ****************************************************************************/
+
 #include "QuadrupedGait.hpp"
+#include <uORB/topics/parameter_update.h>
 
 using namespace time_literals;
 
-QuadrupedGait::QuadrupedGait() :
-	ModuleParams(nullptr),
-       ScheduledWorkItem(MODULE_NAME, px4::wq_configurations::rate_ctrl)
+QuadrupedGait::QuadrupedGait()
+    : ModuleParams(nullptr)
+    , ScheduledWorkItem(MODULE_NAME, px4::wq_configurations::nav_and_controllers)
 {
 }
 
 bool QuadrupedGait::init()
 {
-    ScheduleOnInterval(100_ms); // 10 Hz
+    ScheduleOnInterval(20_ms); // 50 Hz
+    updateParams();
+    _freq = _param_qg_freq.get();
     return true;
-	ScheduleOnInterval(20_ms); // 50 Hz
-	updateParams();
-	_freq = _param_qg_freq.get();
-	return true;
 }
 
 void QuadrupedGait::Run()
 {
-	if (should_exit()) {
-		ScheduleClear();
-		exit_and_cleanup();
-		return;
-	}
+    if (should_exit()) {
+        ScheduleClear();
+        exit_and_cleanup();
+        return;
+    }
 
-	actuator_motors_s motors{};
-	motors.timestamp = hrt_absolute_time();
-	motors.timestamp_sample = motors.timestamp;
-	motors.reversible_flags = 0;
+    actuator_motors_s motors{};
+    motors.timestamp = hrt_absolute_time();
+    motors.timestamp_sample = motors.timestamp;
+    motors.reversible_flags = 0;
 
-	parameter_update_s param_upd{};
+    parameter_update_s param_upd{};
 
-	if (_parameter_update_sub.update(&param_upd)) {
-		updateParams();
-		_freq = _param_qg_freq.get();
-	}
+    if (_parameter_update_sub.update(&param_upd)) {
+        updateParams();
+        _freq = _param_qg_freq.get();
+    }
 
-	quadruped_gait_command_s cmd{};
+    quadruped_gait_command_s cmd{};
 
-	if (_gait_cmd_sub.update(&cmd)) {
-		if (PX4_ISFINITE(cmd.frequency)) {
-			_freq = cmd.frequency;
-		}
+    if (_gait_cmd_sub.update(&cmd)) {
+        if (PX4_ISFINITE(cmd.frequency)) {
+            _freq = cmd.frequency;
+        }
 
-		if (PX4_ISFINITE(cmd.amplitude)) {
-			_amplitude = cmd.amplitude;
-		}
-	}
+        if (PX4_ISFINITE(cmd.amplitude)) {
+            _amplitude = cmd.amplitude;
+        }
+    }
 
-	const float dt = 0.02f; // 20 ms
-	_phase += dt * _freq * 2.f * M_PI;
+    const float dt = 0.02f; // 20 ms
+    _phase += dt * _freq * 2.f * M_PI_F;
 
-	if (_phase > 2.f * M_PI) {
-		_phase -= 2.f * M_PI;
-	}
+    if (_phase > 2.f * M_PI_F) {
+        _phase -= 2.f * M_PI_F;
+    }
 
-	const float a = _amplitude;
+    const float a = _amplitude;
 
-	motors.control[0] = a * sinf(_phase);
-	motors.control[1] = a * cosf(_phase);
-	motors.control[2] = a * sinf(_phase + M_PI);
-	motors.control[3] = a * cosf(_phase + M_PI);
-	motors.control[4] = a * sinf(_phase + M_PI_2);
-	motors.control[5] = a * cosf(_phase + M_PI_2);
-	motors.control[6] = a * sinf(_phase + 3.f * M_PI_2);
-	motors.control[7] = a * cosf(_phase + 3.f * M_PI_2);
+    motors.control[0] = a * sinf(_phase);
+    motors.control[1] = a * cosf(_phase);
+    motors.control[2] = a * sinf(_phase + M_PI_F);
+    motors.control[3] = a * cosf(_phase + M_PI_F);
+    motors.control[4] = a * sinf(_phase + M_PI_2_F);
+    motors.control[5] = a * cosf(_phase + M_PI_2_F);
+    motors.control[6] = a * sinf(_phase + 3.f * M_PI_2_F);
+    motors.control[7] = a * cosf(_phase + 3.f * M_PI_2_F);
 
-	for (int i = 8; i < actuator_motors_s::NUM_CONTROLS; i++) {
-		motors.control[i] = NAN;
-	}
+    for (int i = 8; i < actuator_motors_s::NUM_CONTROLS; i++) {
+        motors.control[i] = NAN;
+    }
 
-	_actuator_motors_pub.publish(motors);
+    _actuator_motors_pub.publish(motors);
 }
 
 int QuadrupedGait::task_spawn(int argc, char *argv[])
 {
-	QuadrupedGait *instance = new QuadrupedGait();
+    QuadrupedGait *instance = new QuadrupedGait();
 
-	if (instance) {
-		_object.store(instance);
-		_task_id = task_id_is_work_queue;
+    if (instance) {
+        _object.store(instance);
+        _task_id = task_id_is_work_queue;
 
-		if (instance->init()) {
-			return PX4_OK;
-		}
+        if (instance->init()) {
+            return PX4_OK;
+        }
 
-	} else {
-		PX4_ERR("alloc failed");
-	}
+    } else {
+        PX4_ERR("alloc failed");
+    }
 
-	delete instance;
-	_object.store(nullptr);
-	_task_id = -1;
+    delete instance;
+    _object.store(nullptr);
+    _task_id = -1;
 
-	return PX4_ERROR;
+    return PX4_ERROR;
 }
 
 int QuadrupedGait::custom_command(int argc, char *argv[])
 {
-	return print_usage("unknown command");
+    return print_usage("unknown command");
 }
 
 int QuadrupedGait::print_usage(const char *reason)
 {
-	if (reason) {
-		PX4_WARN("%s\n", reason);
-	}
+    if (reason) {
+        PX4_WARN("%s\n", reason);
+    }
 
-	PRINT_MODULE_DESCRIPTION(
-		R"DESCR_STR(
+    PRINT_MODULE_DESCRIPTION(
+        R"DESCR_STR(
 ### Description
 Quadruped gait generation example.
 Controls Rotate and Pulley motors of a four legged robot.

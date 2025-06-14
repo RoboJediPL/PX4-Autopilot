@@ -169,9 +169,10 @@ set(msg_files
 	Px4ioStatus.msg
         QshellReq.msg
         QshellRetval.msg
-	QuadrupedGaitCommand.msg
+        QuadrupedGaitCommand.msg
+        QuadrupedLegCommand.msg
         RadioStatus.msg
-	RateCtrlStatus.msg
+        RateCtrlStatus.msg
 	RcChannels.msg
 	RcParameterMap.msg
 	RoverAttitudeSetpoint.msg

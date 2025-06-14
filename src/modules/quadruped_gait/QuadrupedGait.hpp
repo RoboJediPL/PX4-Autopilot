@@ -40,8 +40,12 @@
 
 #include <uORB/Publication.hpp>
 #include <uORB/Subscription.hpp>
+#include <uORB/SubscriptionInterval.hpp>
 #include <uORB/topics/actuator_motors.h>
+#include <uORB/topics/parameter_update.h>
 #include <uORB/topics/quadruped_gait_command.h>
+
+using namespace time_literals;
 
 class QuadrupedGait : public ModuleBase<QuadrupedGait>, public ModuleParams,
 	public px4::ScheduledWorkItem
