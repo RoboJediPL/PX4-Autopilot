@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<sdf version='1.9'>
+  <model name='quadruped'>
+    <link name='base_link'>
+      <pose>0 0 0.2 0 0 0</pose>
+      <inertial>
+        <mass>1.0</mass>
+        <inertia>
+          <ixx>0.01</ixx>
+          <iyy>0.01</iyy>
+          <izz>0.01</izz>
+        </inertia>
+      </inertial>
+      <collision name='collision'>
+        <geometry>
+          <box><size>0.4 0.2 0.1</size></box>
+        </geometry>
+      </collision>
+      <visual name='visual'>
+        <geometry>
+          <box><size>0.4 0.2 0.1</size></box>
+        </geometry>
+      </visual>
+    </link>
+    <!-- simple legs for visual reference -->
+    <link name='leg_fl'>
+      <pose>0.15 0.1 0 0 0 0</pose>
+    </link>
+    <link name='leg_fr'>
+      <pose>0.15 -0.1 0 0 0 0</pose>
+    </link>
+    <link name='leg_rl'>
+      <pose>-0.15 0.1 0 0 0 0</pose>
+    </link>
+    <link name='leg_rr'>
+      <pose>-0.15 -0.1 0 0 0 0</pose>
+    </link>
+  </model>
+</sdf>
