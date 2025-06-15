@@ -1,10 +1,17 @@
 set(BOARD_DEFCONFIG ${PX4_CONFIG_FILE} CACHE FILEPATH "path to defconfig" FORCE)
 set(BOARD_CONFIG ${PX4_BINARY_DIR}/boardconfig CACHE FILEPATH "path to config" FORCE)
 
-execute_process(COMMAND ${PYTHON_EXECUTABLE} -c "import menuconfig" RESULT_VARIABLE ret)
+set(KCONFIG_PYTHONPATH "")
+execute_process(COMMAND ${PYTHON_EXECUTABLE} -c "import menuconfig" RESULT_VARIABLE ret OUTPUT_QUIET ERROR_QUIET)
 if(ret EQUAL "1")
-	message(FATAL_ERROR "kconfiglib is not installed or not in PATH\n"
-				"please install using \"pip3 install kconfiglib\"\n")
+        set(_kconfig_dir ${PX4_SOURCE_DIR}/Tools/kconfig)
+        if(EXISTS "${_kconfig_dir}/menuconfig.py")
+                message(WARNING "kconfiglib not found in Python path, using bundled version")
+                set(KCONFIG_PYTHONPATH ${_kconfig_dir})
+        else()
+                message(FATAL_ERROR "kconfiglib is not installed or not in PATH\n"
+                                        "please install using \"pip3 install kconfiglib\"\n")
+        endif()
 endif()
 
 set(MENUCONFIG_PATH ${PYTHON_EXECUTABLE} -m menuconfig CACHE INTERNAL "menuconfig program" FORCE)
@@ -14,19 +21,23 @@ set(SAVEDEFCONFIG_PATH ${PYTHON_EXECUTABLE} -m savedefconfig CACHE INTERNAL "sav
 set(GENCONFIG_PATH ${PYTHON_EXECUTABLE} -m genconfig CACHE INTERNAL "genconfig program" FORCE)
 
 set(COMMON_KCONFIG_ENV_SETTINGS
-	PYTHON_EXECUTABLE=${PYTHON_EXECUTABLE}
-	KCONFIG_CONFIG=${BOARD_CONFIG}
-	# Set environment variables so that Kconfig can prune Kconfig source
-	# files for other architectures
-	PLATFORM=${PX4_PLATFORM}
+        PYTHON_EXECUTABLE=${PYTHON_EXECUTABLE}
+        KCONFIG_CONFIG=${BOARD_CONFIG}
+        # Set environment variables so that Kconfig can prune Kconfig source
+        # files for other architectures
+        PLATFORM=${PX4_PLATFORM}
 	VENDOR=${PX4_BOARD_VENDOR}
 	MODEL=${PX4_BOARD_MODEL}
 	LABEL=${PX4_BOARD_LABEL}
 	TOOLCHAIN=${CMAKE_TOOLCHAIN_FILE}
 	ARCHITECTURE=${CMAKE_SYSTEM_PROCESSOR}
 	ROMFSROOT=${config_romfs_root}
-	BASE_DEFCONFIG=${BOARD_CONFIG}
+        BASE_DEFCONFIG=${BOARD_CONFIG}
 )
+
+if(KCONFIG_PYTHONPATH)
+    list(APPEND COMMON_KCONFIG_ENV_SETTINGS PYTHONPATH=${KCONFIG_PYTHONPATH})
+endif()
 
 set(config_user_list)
 
