@@ -32,6 +32,8 @@
  ****************************************************************************/
 
 #include "QuadrupedGait.hpp"
+// required for update interval handling of parameters
+#include <uORB/SubscriptionInterval.hpp>
 #include <uORB/topics/parameter_update.h>
 
 using namespace time_literals;
