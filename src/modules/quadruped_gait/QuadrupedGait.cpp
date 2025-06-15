@@ -32,8 +32,6 @@
  ****************************************************************************/
 
 #include "QuadrupedGait.hpp"
-// Include interval-based subscription wrapper to throttle parameter updates
-#include <uORB/SubscriptionInterval.hpp>
 #include <uORB/topics/parameter_update.h>
 
 using namespace time_literals;

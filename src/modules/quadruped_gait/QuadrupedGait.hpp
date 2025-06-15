@@ -40,7 +40,6 @@
 
 #include <uORB/Publication.hpp>
 #include <uORB/Subscription.hpp>
-#include <uORB/SubscriptionInterval.hpp>
 #include <uORB/topics/quadruped_leg_command.h>
 #include <uORB/topics/parameter_update.h>
 #include <uORB/topics/quadruped_gait_command.h>
@@ -65,7 +64,7 @@ private:
 
        uORB::Subscription _gait_cmd_sub{ORB_ID(quadruped_gait_command)};
        uORB::Subscription _leg_cmd_sub{ORB_ID(quadruped_leg_command)};
-       uORB::SubscriptionInterval _parameter_update_sub{ORB_ID(parameter_update), 1_s};
+   uORB::Subscription _parameter_update_sub{ORB_ID(parameter_update)};
 
 	float _phase{0.f};
 	float _freq{1.f};
