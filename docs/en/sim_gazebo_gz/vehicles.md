@@ -208,3 +208,5 @@ make px4_sitl gz_rover_ackermann
 make px4_sitl gz_quadruped
 ```
 
+> **Note** The `kconfiglib` Python package is required for this build. Install it using `Tools/setup/ubuntu.sh` or `pip3 install kconfiglib` if missing.
+
