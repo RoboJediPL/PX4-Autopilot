@@ -202,7 +202,7 @@ make px4_sitl gz_rover_ackermann
 
 ### Quadruped Rover
 
-[Quadruped Rover](../frames_rover/quadruped.md) uses the [rover world](../sim_gazebo_gz/worlds.md#rover) by default and drives four motors per leg (TM, SM, RM and PM).
+[Quadruped Rover](../frames_rover/quadruped.md) uses the [rover world](../sim_gazebo_gz/worlds.md#rover) by default and is based on the existing rover model. It drives four motors per leg (TM, SM, RM and PM).
 
 ```sh
 make px4_sitl gz_quadruped
