@@ -41,7 +41,7 @@
 #include <uORB/Publication.hpp>
 #include <uORB/Subscription.hpp>
 #include <uORB/SubscriptionInterval.hpp>
-#include <uORB/topics/actuator_motors.h>
+#include <uORB/topics/quadruped_leg_command.h>
 #include <uORB/topics/parameter_update.h>
 #include <uORB/topics/quadruped_gait_command.h>
 
@@ -63,13 +63,14 @@ public:
 private:
 	void Run() override;
 
-	uORB::Subscription _gait_cmd_sub{ORB_ID(quadruped_gait_command)};
-	uORB::SubscriptionInterval _parameter_update_sub{ORB_ID(parameter_update), 1_s};
+       uORB::Subscription _gait_cmd_sub{ORB_ID(quadruped_gait_command)};
+       uORB::Subscription _leg_cmd_sub{ORB_ID(quadruped_leg_command)};
+       uORB::SubscriptionInterval _parameter_update_sub{ORB_ID(parameter_update), 1_s};
 
 	float _phase{0.f};
 	float _freq{1.f};
 	float _amplitude{0.5f};
-	uORB::Publication<actuator_motors_s> _actuator_motors_pub{ORB_ID(actuator_motors)};
+       uORB::Publication<quadruped_leg_command_s> _leg_cmd_pub{ORB_ID(quadruped_leg_command)};
 
 	DEFINE_PARAMETERS(
 		(ParamFloat<px4::params::QG_FREQ>) _param_qg_freq
