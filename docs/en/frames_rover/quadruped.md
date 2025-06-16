@@ -7,4 +7,12 @@ Turn Motor (TM) and Spin Motor (SM) provide rover-style driving, while Rotate Mo
 
 Simulation of the quadruped rover is supported with Gazebo using the `gz_quadruped` target. See [Simulation > Gazebo](../sim_gazebo_gz/vehicles.md#quadruped-rover) for details.
 
+::: tip
+If the build or simulation fails with an error that the `quadruped` model cannot be found, the submodule containing the Gazebo models may not have been initialized. Fetch the models using:
+
+```sh
+git submodule update --init --recursive Tools/simulation/gz
+```
+:::
+
 See [Configuration/Tuning](../config_rover/quadruped.md) to set up your rover and [Drive Modes](../flight_modes_rover/quadruped.md) for the supported drive modes.
