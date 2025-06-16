@@ -15,4 +15,12 @@ git submodule update --init --recursive Tools/simulation/gz
 ```
 :::
 
+::: tip
+If you see `ERROR: Gazebo simulation dependencies not found!` when running `make px4_sitl gz_quadruped`, install Gazebo using:
+
+```sh
+bash Tools/setup/ubuntu.sh
+```
+:::
+
 See [Configuration/Tuning](../config_rover/quadruped.md) to set up your rover and [Drive Modes](../flight_modes_rover/quadruped.md) for the supported drive modes.

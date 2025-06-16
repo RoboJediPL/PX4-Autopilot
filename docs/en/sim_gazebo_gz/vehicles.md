@@ -216,3 +216,15 @@ make px4_sitl gz_quadruped
 > pip3 install -r Tools/setup/requirements.txt
 > ```
 
+> **Note** If you encounter `ERROR: Gazebo simulation dependencies not found!` during the build, install Gazebo using:
+>
+> ```sh
+> bash Tools/setup/ubuntu.sh
+> ```
+
+> **Tip** The Gazebo models are stored in a submodule. If Gazebo reports that `model.sdf` cannot be found, fetch the models with:
+>
+> ```sh
+> git submodule update --init Tools/simulation/gz
+> ```
+

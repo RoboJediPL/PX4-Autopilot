@@ -157,5 +157,4 @@ Quadruped rover control module mapping throttle, steering and velocity setpoints
 
 extern "C" __EXPORT int quadruped_main(int argc, char *argv[]) {
   return Quadruped::main(argc, argv);
-
 }
