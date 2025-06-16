@@ -210,3 +210,24 @@ make px4_sitl gz_quadruped
 
 > **Note** The `kconfiglib` Python package is required for this build. Install it using `Tools/setup/ubuntu.sh` or `pip3 install kconfiglib` if missing.
 
+> **Note** If the build fails with `ModuleNotFoundError` (e.g. for the `em` or `genmsg` modules), install the PX4 Python dependencies using:
+>
+> ```sh
+> pip3 install -r Tools/setup/requirements.txt
+> ```
+
+> **Note** If you encounter `ERROR: Gazebo simulation dependencies not found!` during the build, install Gazebo using:
+>
+> ```sh
+> bash Tools/setup/ubuntu.sh
+> ```
+
+> **Tip** The Gazebo models are stored in a submodule. If Gazebo reports that `model.sdf` cannot be found, fetch the models with:
+>
+> ```sh
+> git submodule update --init Tools/simulation/gz
+> ```
+
+> **Note** If CMake prints `unknown target 'gz_quadruped'`, remove the build
+directory and retry after fetching the submodule.
+
