@@ -210,3 +210,9 @@ make px4_sitl gz_quadruped
 
 > **Note** The `kconfiglib` Python package is required for this build. Install it using `Tools/setup/ubuntu.sh` or `pip3 install kconfiglib` if missing.
 
+> **Note** If the build fails with `ModuleNotFoundError` (e.g. for the `em` or `genmsg` modules), install the PX4 Python dependencies using:
+>
+> ```sh
+> pip3 install -r Tools/setup/requirements.txt
+> ```
+

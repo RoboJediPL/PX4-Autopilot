@@ -111,54 +111,51 @@ private:
         )
 };
 
-int Quadruped::task_spawn(int argc, char *argv[])
-{
-       Quadruped *instance = new Quadruped();
+int Quadruped::task_spawn(int argc, char *argv[]) {
+  Quadruped *instance = new Quadruped();
 
-       if (instance) {
-               _object.store(instance);
-               _task_id = task_id_is_work_queue;
+  if (instance) {
+    _object.store(instance);
+    _task_id = task_id_is_work_queue;
 
-               if (instance->init()) {
-                       return PX4_OK;
-               }
+    if (instance->init()) {
+      return PX4_OK;
+    }
 
-       } else {
-               PX4_ERR("alloc failed");
-       }
+  } else {
+    PX4_ERR("alloc failed");
+  }
 
-       delete instance;
-       _object.store(nullptr);
-       _task_id = -1;
+  delete instance;
+  _object.store(nullptr);
+  _task_id = -1;
 
-       return PX4_ERROR;
+  return PX4_ERROR;
 }
 
-int Quadruped::custom_command(int argc, char *argv[])
-{
-       return print_usage("unknown command");
+int Quadruped::custom_command(int argc, char *argv[]) {
+  return print_usage("unknown command");
 }
 
-int Quadruped::print_usage(const char *reason)
-{
-       if (reason) {
-               PX4_WARN("%s\n", reason);
-       }
+int Quadruped::print_usage(const char *reason) {
+  if (reason) {
+    PX4_WARN("%s\n", reason);
+  }
 
-       PRINT_MODULE_DESCRIPTION(
-               R"DESCR_STR(
+  PRINT_MODULE_DESCRIPTION(
+      R"DESCR_STR(
 ### Description
-Simple quadruped gait controller. Maps rover drive commands to leg actuators.
+Quadruped rover control module mapping throttle, steering and velocity setpoints to leg commands.
 )DESCR_STR");
 
-       PRINT_MODULE_USAGE_NAME("quadruped", "controller");
-       PRINT_MODULE_USAGE_COMMAND("start");
-       PRINT_MODULE_USAGE_DEFAULT_COMMANDS();
+  PRINT_MODULE_USAGE_NAME("quadruped", "controller");
+  PRINT_MODULE_USAGE_COMMAND("start");
+  PRINT_MODULE_USAGE_DEFAULT_COMMANDS();
 
-       return 0;
+  return 0;
 }
 
-int Quadruped_main(int argc, char *argv[])
-{
-	return Quadruped::main(argc, argv);
+extern "C" __EXPORT int quadruped_main(int argc, char *argv[]) {
+  return Quadruped::main(argc, argv);
+
 }
