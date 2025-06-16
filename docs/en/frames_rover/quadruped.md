@@ -16,6 +16,11 @@ git submodule update --init --recursive Tools/simulation/gz
 :::
 
 ::: tip
+If the `gz_quadruped` make target is missing, remove the build directory and run
+the above submodule command before rebuilding.
+:::
+
+::: tip
 If you see `ERROR: Gazebo simulation dependencies not found!` when running `make px4_sitl gz_quadruped`, install Gazebo using:
 
 ```sh

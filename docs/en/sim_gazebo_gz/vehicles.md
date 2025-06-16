@@ -228,3 +228,6 @@ make px4_sitl gz_quadruped
 > git submodule update --init Tools/simulation/gz
 > ```
 
+> **Note** If CMake prints `unknown target 'gz_quadruped'`, remove the build
+directory and retry after fetching the submodule.
+
