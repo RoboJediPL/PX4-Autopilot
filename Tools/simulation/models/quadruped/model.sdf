@@ -21,6 +21,31 @@
           <box><size>0.4 0.2 0.1</size></box>
         </geometry>
       </visual>
+
+      <!-- basic sensors for PX4 SITL -->
+      <sensor name='imu_sensor' type='imu'>
+        <always_on>true</always_on>
+        <update_rate>250</update_rate>
+        <imu/>
+      </sensor>
+
+      <sensor name='magnetometer_sensor' type='magnetometer'>
+        <always_on>true</always_on>
+        <update_rate>80</update_rate>
+        <magnetometer/>
+      </sensor>
+
+      <sensor name='air_pressure_sensor' type='air_pressure'>
+        <always_on>true</always_on>
+        <update_rate>80</update_rate>
+        <air_pressure/>
+      </sensor>
+
+      <sensor name='navsat_sensor' type='navsat'>
+        <always_on>true</always_on>
+        <update_rate>5</update_rate>
+        <navsat/>
+      </sensor>
     </link>
     <!-- simple legs for visual reference -->
     <link name='leg_fl'>
