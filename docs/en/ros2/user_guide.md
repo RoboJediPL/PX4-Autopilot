@@ -179,8 +179,14 @@ Note that only one agent is allowed per connection channel.
 ::: tip
 If you forget to start the agent, PX4 will repeatedly print
 `NodeShared::Publish() Error: Interrupted system call` when it tries to
-send messages. Simply start the agent (as shown above) or disable the
-`uxrce_dds_client` in your startup script to remove the warning.
+send messages. Start the agent again using:
+
+```sh
+MicroXRCEAgent udp4 -p 8888
+```
+
+Alternatively disable the `uxrce_dds_client` in your startup script to
+remove the warning.
 :::
 
 #### Start the Client
