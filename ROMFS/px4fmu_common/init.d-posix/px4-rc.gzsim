@@ -131,10 +131,18 @@ if [ -n "${PX4_SIM_MODEL#*gz_}" ] && [ -z "${PX4_GZ_MODEL_NAME}" ]; then
 		echo "INFO  [init] Gazebo model pose: ${pose_x} ${pose_y} ${pose_z} ${pose_roll} ${pose_pitch} ${pose_yaw}"
 	fi
 
-	echo "INFO  [init] Spawning Gazebo model"
+       echo "INFO  [init] Spawning Gazebo model"
 
-	# include the actual SDF in this one, containing the pose if given
-	sdf_str="<sdf version=\"1.6\"> <include> <uri>file://${PX4_GZ_MODELS}/${MODEL_NAME}/model.sdf</uri> ${sdf_pose_str} </include> </sdf>"
+       model_sdf="${PX4_GZ_MODELS}/${MODEL_NAME}/model.sdf"
+
+       if [ ! -f "${model_sdf}" ]; then
+               echo "ERROR [init] Gazebo model not found: ${model_sdf}"
+               echo "ERROR [init] Did you run 'git submodule update --init Tools/simulation/gz'?"
+               exit 1
+       fi
+
+       # include the actual SDF in this one, containing the pose if given
+       sdf_str="<sdf version=\"1.6\"> <include> <uri>file://${model_sdf}</uri> ${sdf_pose_str} </include> </sdf>"
 
 	# Spawn model
 	${gz_command} service -s "/world/${PX4_GZ_WORLD}/create" --reqtype gz.msgs.EntityFactory \
