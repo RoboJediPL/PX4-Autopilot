@@ -117,7 +117,6 @@
         <always_on>1</always_on>
         <update_rate>30</update_rate>
       </sensor>
-
       <!-- Gazebo plugins to publish sensor data to PX4 -->
       <plugin name='imu_plugin' filename='libgazebo_imu_plugin.so'>
         <robotNamespace>px4</robotNamespace>
