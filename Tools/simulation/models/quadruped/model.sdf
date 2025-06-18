@@ -117,7 +117,6 @@
         <always_on>1</always_on>
         <update_rate>30</update_rate>
       </sensor>
-
     </link>
     <!-- simple legs for visual reference -->
     <link name='leg_fl'>
