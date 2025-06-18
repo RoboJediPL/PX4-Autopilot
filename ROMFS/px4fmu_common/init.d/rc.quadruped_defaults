@@ -13,6 +13,10 @@ param set-default EKF2_ANGERR_INIT 0.01
 # disable power supply checks for simulation
 param set-default CBRK_SUPPLY_CHK 894281
 
+# disable EKF preflight failure on startup when using Gazebo sensors
+param set-default COM_ARM_EKF_HGT 0
+
+
 # Quadruped gait parameters
 param set-default QDP_PERIOD_MS 2000
 param set-default QDP_STEP_AMP 0.5
