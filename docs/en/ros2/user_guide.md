@@ -176,6 +176,19 @@ You can leave the agent running in this terminal!
 Note that only one agent is allowed per connection channel.
 :::
 
+::: tip
+If you forget to start the agent, PX4 will repeatedly print
+`NodeShared::Publish() Error: Interrupted system call` when it tries to
+send messages. Start the agent again using:
+
+```sh
+MicroXRCEAgent udp4 -p 8888
+```
+
+Alternatively disable the `uxrce_dds_client` in your startup script to
+remove the warning.
+:::
+
 #### Start the Client
 
 The PX4 simulator starts the uXRCE-DDS client automatically, connecting to UDP port 8888 on the local host.
