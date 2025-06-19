@@ -44,8 +44,7 @@ if [ -z "${PX4_GZ_STANDALONE}" ]; then
 		elif [ -f ../gz_env.sh ]; then
 			. ../gz_env.sh
 		fi
-
-               # PX4_GZ_WORLDS may contain multiple directories separated by ':'
+              # PX4_GZ_WORLDS may contain multiple directories separated by ':'
                # Select the first directory that actually contains the world file
                IFS=':'
                for d in ${PX4_GZ_WORLDS}; do
@@ -63,6 +62,7 @@ if [ -z "${PX4_GZ_STANDALONE}" ]; then
                echo "INFO  [init] Starting gazebo with world: ${px4_world_dir}/${PX4_GZ_WORLD}.sdf"
 
                ${gz_command} ${gz_sub_command} --verbose=${GZ_VERBOSE:=1} -r -s "${px4_world_dir}/${PX4_GZ_WORLD}.sdf" &
+
 
 		if [ -z "${HEADLESS}" ]; then
 			echo "INFO  [init] Starting gz gui"
