@@ -59,6 +59,10 @@ Rover world is very similar to [lawn world](#lawn), but with these tow main diff
 
 :::
 
+## Quadruped {#quadruped}
+
+World tailored for the quadruped rover. It is based on the rover world configuration and is shipped with PX4 in `Tools/simulation/worlds/quadruped.sdf`.
+
 ## Walls
 
 World with walls that is designed for testing [collision prevention](../computer_vision/collision_prevention.md).
